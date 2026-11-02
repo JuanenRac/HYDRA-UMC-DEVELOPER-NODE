@@ -20,7 +20,7 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
   <img src="https://img.shields.io/badge/Tests-70%20passing-2ea44f.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -38,7 +38,7 @@ GPL-3.0-or-later - see LICENSE
 
 | | |
 |---|---|
-| Versão | `0.0.1` |
+| Versão | `0.0.2` |
 | Maturidade | Estrutura inicial |
 | Testes | 70 (`python -m pytest -q tests`) |
 | Tecnologia | Python 3.11+ / JSON Schema / SQLite / git worktree |

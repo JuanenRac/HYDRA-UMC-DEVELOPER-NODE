@@ -5,4 +5,4 @@
 # =============================================================================
 """HYDRA-UMC-DEVELOPER-NODE: the developer node of the ecosystem, closed by default and approved by a person."""
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"

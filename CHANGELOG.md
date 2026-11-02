@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.2] - A full mode of the ecosystem CI plugin that runs the heavy tests of every repository after one approval of the whole batch, one repository at a time, with limits of time, output and free disk, and a consolidated report
+
 - **Complete mode of the `ecosystem-ci` plugin, closed by default:** besides the shared CI, it can run the heavy test a repository declares in its manifest (`developer_node.full_test`); a repository that declares nothing runs nothing. The plan lists every command repository by repository with the SHA-256 of each script, and a person approves the whole batch by its digest (it expires and is used up by the run) after leaving out the repositories they do not want.
 - **Serial and bounded runs:** one command at a time, a time limit per command and in total, a limit on the output size, a minimal environment without anything that looks like a secret, offline hints unless the repository declares that it needs the network and the configuration allows it, and nothing outside the approved list is ever started.
 - **Disk protection:** the complete mode refuses to start, and stops between commands, when the disk of the workspace has less free space than `ecosystemCiFull.minFreeGb` (10 GB by default).

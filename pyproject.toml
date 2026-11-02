@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hydra-umc-developer-node"
-version = "0.0.1"
+version = "0.0.2"
 description = "Developer node of the HYDRA-UMC ecosystem: reads evidence bundles of the local technician, keeps a cache of checkouts by revision, runs repro recipes and the shared CI only after a person approved them. Every part is closed by default and nothing leaves the machine."
 readme = "README.md"
 requires-python = ">=3.11"
