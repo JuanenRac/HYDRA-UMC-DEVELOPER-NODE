@@ -1,0 +1,183 @@
+{
+  "repo": "HYDRA-UMC-DEVELOPER-NODE",
+  "ecosystem": "hydra",
+  "tagline": "Every part closed, every run approved by a person, nothing leaves the machine.",
+  "description": "HYDRA-UMC-DEVELOPER-NODE reads evidence bundles from the local technician, keeps a cache of checkouts by revision, runs reproduction recipes and the shared CI only after a person approved the exact plan, and publishes a status document for dashboards.",
+  "columns": [
+    "WHO USES IT",
+    "THIS REPOSITORY",
+    "READS AND FEEDS"
+  ],
+  "nodes": [
+    {
+      "id": "user",
+      "column": 0,
+      "level": "external",
+      "title": "People",
+      "lines": [
+        "CLI in eight languages;",
+        "they approve every run"
+      ]
+    },
+    {
+      "id": "dash",
+      "column": 0,
+      "level": "external",
+      "title": "Dashboards",
+      "lines": [
+        "read the status document,",
+        "never send a command"
+      ]
+    },
+    {
+      "id": "tech",
+      "column": 2,
+      "level": "external",
+      "title": "LOCAL-TECHNICIAN",
+      "lines": [
+        "produces the evidence",
+        "bundles read here"
+      ]
+    },
+    {
+      "id": "git",
+      "column": 2,
+      "level": "external",
+      "title": "Git remotes",
+      "lines": [
+        "only those listed in",
+        "the configuration"
+      ]
+    },
+    {
+      "id": "sdk",
+      "column": 2,
+      "level": "external",
+      "title": "SDK",
+      "lines": [
+        "computes the verdict of",
+        "a before and after pair"
+      ]
+    },
+    {
+      "id": "cli",
+      "column": 1,
+      "level": "tested",
+      "title": "cli.py / settings.py",
+      "lines": [
+        "entry point; every switch",
+        "closed by default"
+      ],
+      "code": [
+        "src/hydra_umc_developer_node/cli.py",
+        "src/hydra_umc_developer_node/settings.py"
+      ]
+    },
+    {
+      "id": "evi",
+      "column": 1,
+      "level": "tested",
+      "title": "evidence.py",
+      "lines": [
+        "signature, nonce, checksum,",
+        "no secrets: then a case"
+      ],
+      "code": [
+        "src/hydra_umc_developer_node/evidence.py"
+      ]
+    },
+    {
+      "id": "rep",
+      "column": 1,
+      "level": "tested",
+      "title": "repro.py / approvals.py",
+      "lines": [
+        "approved digest, allowed",
+        "commands, bounded run"
+      ],
+      "code": [
+        "src/hydra_umc_developer_node/repro.py",
+        "src/hydra_umc_developer_node/approvals.py"
+      ]
+    },
+    {
+      "id": "chk",
+      "column": 1,
+      "level": "tested",
+      "title": "checkouts.py",
+      "lines": [
+        "bare mirror, worktree per",
+        "commit, limit in GB"
+      ],
+      "code": [
+        "src/hydra_umc_developer_node/checkouts.py"
+      ]
+    },
+    {
+      "id": "pan",
+      "column": 1,
+      "level": "tested",
+      "title": "panel.py / plugin_ci.py",
+      "lines": [
+        "status document and the",
+        "ecosystem-ci report"
+      ],
+      "code": [
+        "src/hydra_umc_developer_node/panel.py",
+        "src/hydra_umc_developer_node/plugin_ci.py"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "user",
+      "to": "cli",
+      "level": "tested"
+    },
+    {
+      "from": "cli",
+      "to": "evi",
+      "level": "tested"
+    },
+    {
+      "from": "cli",
+      "to": "rep",
+      "level": "tested"
+    },
+    {
+      "from": "rep",
+      "to": "chk",
+      "level": "tested"
+    },
+    {
+      "from": "rep",
+      "to": "pan",
+      "level": "tested"
+    },
+    {
+      "from": "tech",
+      "to": "evi",
+      "level": "external",
+      "label": "bundle"
+    },
+    {
+      "from": "chk",
+      "to": "git",
+      "level": "external",
+      "label": "fetch"
+    },
+    {
+      "from": "rep",
+      "to": "sdk",
+      "level": "external",
+      "label": "verdict"
+    },
+    {
+      "from": "pan",
+      "to": "dash",
+      "level": "external",
+      "label": "status"
+    }
+  ],
+  "footer": "Nothing is sent anywhere; no run starts without a person's approval."
+}

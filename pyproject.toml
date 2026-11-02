@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydra-umc-developer-node"
+version = "0.0.1"
+description = "Developer node of the HYDRA-UMC ecosystem: reads evidence bundles of the local technician, keeps a cache of checkouts by revision, runs repro recipes and the shared CI only after a person approved them. Every part is closed by default and nothing leaves the machine."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE.md" }
+authors = [
+    { name = "JuanenRac (Electro Hobby 3D)", email = "electrohobby3d@gmail.com" },
+]
+keywords = ["hydra-umc", "developer-node", "evidence", "reproduction", "worktree", "ci"]
+# The core is the standard library only. The verdict of a before/after pair is computed by the SDK (extra `sdk`).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+# Pinned to a tag on purpose: the node never depends on whatever the SDK branch holds at that moment; raise the pin deliberately.
+sdk = ["hydra-umc-sdk @ git+https://github.com/JuanenRac/HYDRA-UMC-SDK.git@v0.4.8#subdirectory=clients/python"]
+
+[project.urls]
+Homepage = "https://github.com/JuanenRac/HYDRA-UMC-DEVELOPER-NODE"
+
+[project.scripts]
+hydra-umc-developer-node = "hydra_umc_developer_node.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff.lint]
+select = ["F", "E9", "B"]
+
+[tool.mypy]
+ignore_missing_imports = true

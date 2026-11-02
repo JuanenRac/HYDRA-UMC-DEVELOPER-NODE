@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JuanenRac/HYDRA-UMC-DEVELOPER-NODE/contracts/panel_status.schema.json",
+  "title": "PanelStatus",
+  "description": "What a dashboard or a studio shows about the developer node: the switches, the queue, the last journal entries and the health. A reader only reads it; the node never accepts a command through this document.",
+  "type": "object",
+  "required": ["contract", "version", "language", "generated_at", "switches", "queue", "journal", "health", "labels"],
+  "additionalProperties": false,
+  "properties": {
+    "contract": { "const": "developer-node-status/1" },
+    "version": { "type": "string", "minLength": 1 },
+    "language": { "enum": ["en", "es", "de", "fr", "it", "ja", "zh", "pt"] },
+    "generated_at": { "type": "number" },
+    "switches": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" }
+    },
+    "queue": {
+      "type": "object",
+      "required": ["cases", "awaiting_approval", "outcomes"],
+      "additionalProperties": false,
+      "properties": {
+        "cases": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "awaiting_approval": { "type": "integer", "minimum": 0 },
+        "outcomes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "journal": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "at", "kind", "case_id", "detail"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "integer" },
+          "at": { "type": "number" },
+          "kind": { "type": "string", "minLength": 1 },
+          "case_id": { "type": ["string", "null"] },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "health": {
+      "type": "object",
+      "required": ["store_ok", "cache_bytes", "cache_limit_bytes", "cache_over_limit", "last_ci_report"],
+      "additionalProperties": false,
+      "properties": {
+        "store_ok": { "type": "boolean" },
+        "cache_bytes": { "type": "integer", "minimum": 0 },
+        "cache_limit_bytes": { "type": "integer", "minimum": 0 },
+        "cache_over_limit": { "type": "boolean" },
+        "last_ci_report": { "type": ["object", "null"] }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

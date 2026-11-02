@@ -1,0 +1,664 @@
+{
+  "repo": "HYDRA-UMC-DEVELOPER-NODE",
+  "ecosystem": "hydra",
+  "svg": "en",
+  "exempt": [
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "LICENSE",
+    "LICENSE.md",
+    "build-test.bat",
+    "test.bat"
+  ],
+  "cards": [
+    {
+      "name": "src/hydra_umc_developer_node/",
+      "span": 3,
+      "accent": "a",
+      "rows": [
+        {
+          "name": "cli.py",
+          "desc": {
+            "en": "command line",
+            "es": "línea de comandos",
+            "de": "Befehlszeile",
+            "fr": "ligne de commande",
+            "it": "riga di comando",
+            "ja": "コマンドライン",
+            "zh": "命令行",
+            "pt": "linha de comandos"
+          },
+          "tree_desc": {
+            "en": "command line",
+            "es": "línea de comandos",
+            "de": "Befehlszeile",
+            "fr": "ligne de commande",
+            "it": "riga di comando",
+            "ja": "コマンドライン",
+            "zh": "命令行",
+            "pt": "linha de comandos"
+          }
+        },
+        {
+          "name": "settings.py",
+          "desc": {
+            "en": "configuration and switches",
+            "es": "configuración e interruptores",
+            "de": "Konfiguration und Schalter",
+            "fr": "configuration et interrupteurs",
+            "it": "configurazione e interruttori",
+            "ja": "設定とスイッチ",
+            "zh": "配置与开关",
+            "pt": "configuração e interruptores"
+          },
+          "tree_desc": {
+            "en": "configuration and switches",
+            "es": "configuración e interruptores",
+            "de": "Konfiguration und Schalter",
+            "fr": "configuration et interrupteurs",
+            "it": "configurazione e interruttori",
+            "ja": "設定とスイッチ",
+            "zh": "配置与开关",
+            "pt": "configuração e interruptores"
+          }
+        },
+        {
+          "name": "evidence.py",
+          "desc": {
+            "en": "evidence bundle checks and intake",
+            "es": "comprobación e ingesta de pruebas",
+            "de": "Prüfung und Aufnahme von Belegen",
+            "fr": "contrôle et ingestion des preuves",
+            "it": "verifica e acquisizione delle prove",
+            "ja": "証拠バンドルの検証と取り込み",
+            "zh": "证据包的校验与接收",
+            "pt": "verificação e ingestão de provas"
+          },
+          "tree_desc": {
+            "en": "evidence bundle checks and intake",
+            "es": "comprobación e ingesta de pruebas",
+            "de": "Prüfung und Aufnahme von Belegen",
+            "fr": "contrôle et ingestion des preuves",
+            "it": "verifica e acquisizione delle prove",
+            "ja": "証拠バンドルの検証と取り込み",
+            "zh": "证据包的校验与接收",
+            "pt": "verificação e ingestão de provas"
+          }
+        },
+        {
+          "name": "repro.py",
+          "desc": {
+            "en": "repro recipes and runs",
+            "es": "recetas de reproducción y ejecuciones",
+            "de": "Reproduktionsrezepte und Läufe",
+            "fr": "recettes de reproduction et exécutions",
+            "it": "ricette di riproduzione ed esecuzioni",
+            "ja": "再現レシピと実行",
+            "zh": "复现配方与运行",
+            "pt": "receitas de reprodução e execuções"
+          },
+          "tree_desc": {
+            "en": "repro recipes and runs",
+            "es": "recetas de reproducción y ejecuciones",
+            "de": "Reproduktionsrezepte und Läufe",
+            "fr": "recettes de reproduction et exécutions",
+            "it": "ricette di riproduzione ed esecuzioni",
+            "ja": "再現レシピと実行",
+            "zh": "复现配方与运行",
+            "pt": "receitas de reprodução e execuções"
+          }
+        },
+        {
+          "name": "checkouts.py",
+          "desc": {
+            "en": "checkout cache by revision",
+            "es": "caché de checkouts por revisión",
+            "de": "Checkout-Cache pro Revision",
+            "fr": "cache des checkouts par révision",
+            "it": "cache dei checkout per revisione",
+            "ja": "リビジョン別チェックアウトのキャッシュ",
+            "zh": "按修订版本的检出缓存",
+            "pt": "cache de checkouts por revisão"
+          },
+          "tree_desc": {
+            "en": "checkout cache by revision",
+            "es": "caché de checkouts por revisión",
+            "de": "Checkout-Cache pro Revision",
+            "fr": "cache des checkouts par révision",
+            "it": "cache dei checkout per revisione",
+            "ja": "リビジョン別チェックアウトのキャッシュ",
+            "zh": "按修订版本的检出缓存",
+            "pt": "cache de checkouts por revisão"
+          }
+        },
+        {
+          "name": "panel.py",
+          "desc": {
+            "en": "status document for dashboards",
+            "es": "documento de estado para paneles",
+            "de": "Statusdokument für Dashboards",
+            "fr": "document d'état pour les tableaux de bord",
+            "it": "documento di stato per i pannelli",
+            "ja": "ダッシュボード用の状態文書",
+            "zh": "面向仪表板的状态文档",
+            "pt": "documento de estado para painéis"
+          },
+          "tree_desc": {
+            "en": "status document for dashboards",
+            "es": "documento de estado para paneles",
+            "de": "Statusdokument für Dashboards",
+            "fr": "document d'état pour les tableaux de bord",
+            "it": "documento di stato per i pannelli",
+            "ja": "ダッシュボード用の状態文書",
+            "zh": "面向仪表板的状态文档",
+            "pt": "documento de estado para painéis"
+          }
+        },
+        {
+          "name": "plugin_ci.py",
+          "desc": {
+            "en": "ecosystem-ci plugin",
+            "es": "plugin ecosystem-ci",
+            "de": "Plugin ecosystem-ci",
+            "fr": "plugin ecosystem-ci",
+            "it": "plugin ecosystem-ci",
+            "ja": "ecosystem-ci プラグイン",
+            "zh": "ecosystem-ci 插件",
+            "pt": "plugin ecosystem-ci"
+          },
+          "tree_desc": {
+            "en": "ecosystem-ci plugin",
+            "es": "plugin ecosystem-ci",
+            "de": "Plugin ecosystem-ci",
+            "fr": "plugin ecosystem-ci",
+            "it": "plugin ecosystem-ci",
+            "ja": "ecosystem-ci プラグイン",
+            "zh": "ecosystem-ci 插件",
+            "pt": "plugin ecosystem-ci"
+          }
+        },
+        {
+          "name": "approvals.py",
+          "desc": {
+            "en": "approval by a person",
+            "es": "aprobación por una persona",
+            "de": "Freigabe durch einen Menschen",
+            "fr": "approbation par une personne",
+            "it": "approvazione di una persona",
+            "ja": "担当者による承認",
+            "zh": "由人工批准",
+            "pt": "aprovação por uma pessoa"
+          },
+          "tree_desc": {
+            "en": "approval by a person",
+            "es": "aprobación por una persona",
+            "de": "Freigabe durch einen Menschen",
+            "fr": "approbation par une personne",
+            "it": "approvazione di una persona",
+            "ja": "担当者による承認",
+            "zh": "由人工批准",
+            "pt": "aprovação por uma pessoa"
+          }
+        },
+        {
+          "name": "store.py",
+          "desc": {
+            "en": "local database and journal",
+            "es": "base de datos local y diario",
+            "de": "lokale Datenbank und Journal",
+            "fr": "base locale et journal",
+            "it": "database locale e registro",
+            "ja": "ローカルDBとジャーナル",
+            "zh": "本地数据库与日志",
+            "pt": "base de dados local e diário"
+          },
+          "tree_desc": {
+            "en": "local database and journal",
+            "es": "base de datos local y diario",
+            "de": "lokale Datenbank und Journal",
+            "fr": "base locale et journal",
+            "it": "database locale e registro",
+            "ja": "ローカルDBとジャーナル",
+            "zh": "本地数据库与日志",
+            "pt": "base de dados local e diário"
+          }
+        },
+        {
+          "name": "schema.py",
+          "desc": {
+            "en": "contract checker",
+            "es": "verificador de contratos",
+            "de": "Vertragsprüfung",
+            "fr": "vérificateur de contrats",
+            "it": "verifica dei contratti",
+            "ja": "契約の検証",
+            "zh": "合约校验",
+            "pt": "verificador de contratos"
+          },
+          "tree_desc": {
+            "en": "contract checker",
+            "es": "verificador de contratos",
+            "de": "Vertragsprüfung",
+            "fr": "vérificateur de contrats",
+            "it": "verifica dei contratti",
+            "ja": "契約の検証",
+            "zh": "合约校验",
+            "pt": "verificador de contratos"
+          }
+        },
+        {
+          "name": "redaction.py",
+          "desc": {
+            "en": "secret redaction",
+            "es": "ocultación de secretos",
+            "de": "Schwärzung von Geheimnissen",
+            "fr": "masquage des secrets",
+            "it": "oscuramento dei segreti",
+            "ja": "秘密情報の秘匿",
+            "zh": "机密脱敏",
+            "pt": "ocultação de segredos"
+          },
+          "tree_desc": {
+            "en": "secret redaction",
+            "es": "ocultación de secretos",
+            "de": "Schwärzung von Geheimnissen",
+            "fr": "masquage des secrets",
+            "it": "oscuramento dei segreti",
+            "ja": "秘密情報の秘匿",
+            "zh": "机密脱敏",
+            "pt": "ocultação de segredos"
+          }
+        },
+        {
+          "name": "i18n.py",
+          "desc": {
+            "en": "texts in eight languages",
+            "es": "textos en ocho idiomas",
+            "de": "Texte in acht Sprachen",
+            "fr": "textes en huit langues",
+            "it": "testi in otto lingue",
+            "ja": "8言語のテキスト",
+            "zh": "八种语言的文本",
+            "pt": "textos em oito idiomas"
+          },
+          "tree_desc": {
+            "en": "texts in eight languages",
+            "es": "textos en ocho idiomas",
+            "de": "Texte in acht Sprachen",
+            "fr": "textes en huit langues",
+            "it": "testi in otto lingue",
+            "ja": "8言語のテキスト",
+            "zh": "八种语言的文本",
+            "pt": "textos em oito idiomas"
+          }
+        }
+      ],
+      "tree_head": {
+        "en": "source code",
+        "es": "código fuente",
+        "de": "Quellcode",
+        "fr": "code source",
+        "it": "codice sorgente",
+        "ja": "ソースコード",
+        "zh": "源代码",
+        "pt": "código-fonte"
+      },
+      "sub": {
+        "en": "source code",
+        "es": "código fuente",
+        "de": "Quellcode",
+        "fr": "code source",
+        "it": "codice sorgente",
+        "ja": "ソースコード",
+        "zh": "源代码",
+        "pt": "código-fonte"
+      }
+    },
+    {
+      "name": {
+        "en": "folders",
+        "es": "carpetas",
+        "de": "Ordner",
+        "fr": "dossiers",
+        "it": "cartelle",
+        "ja": "フォルダ",
+        "zh": "文件夹",
+        "pt": "pastas"
+      },
+      "kind": "group",
+      "span": 3,
+      "accent": "b",
+      "columns": 2,
+      "rows": [
+        {
+          "name": "contracts/",
+          "desc": {
+            "en": "JSON Schema contracts",
+            "es": "contratos JSON Schema",
+            "de": "JSON-Schema-Verträge",
+            "fr": "contrats JSON Schema",
+            "it": "contratti JSON Schema",
+            "ja": "JSON Schema の契約",
+            "zh": "JSON Schema 合约",
+            "pt": "contratos JSON Schema"
+          },
+          "tree_desc": {
+            "en": "JSON Schema contracts",
+            "es": "contratos JSON Schema",
+            "de": "JSON-Schema-Verträge",
+            "fr": "contrats JSON Schema",
+            "it": "contratti JSON Schema",
+            "ja": "JSON Schema の契約",
+            "zh": "JSON Schema 合约",
+            "pt": "contratos JSON Schema"
+          }
+        },
+        {
+          "name": "tests/",
+          "desc": {
+            "en": "automated tests",
+            "es": "pruebas automáticas",
+            "de": "automatische Tests",
+            "fr": "tests automatiques",
+            "it": "test automatici",
+            "ja": "自動テスト",
+            "zh": "自动测试",
+            "pt": "testes automáticos"
+          },
+          "tree_desc": {
+            "en": "automated tests",
+            "es": "pruebas automáticas",
+            "de": "automatische Tests",
+            "fr": "tests automatiques",
+            "it": "test automatici",
+            "ja": "自動テスト",
+            "zh": "自动测试",
+            "pt": "testes automáticos"
+          }
+        },
+        {
+          "name": "configs/",
+          "desc": {
+            "en": "example configuration, all closed",
+            "es": "configuración de ejemplo, todo cerrado",
+            "de": "Beispielkonfiguration, alles geschlossen",
+            "fr": "configuration d'exemple, tout fermé",
+            "it": "configurazione di esempio, tutto chiuso",
+            "ja": "設定例（すべて閉）",
+            "zh": "示例配置，全部关闭",
+            "pt": "configuração de exemplo, tudo fechado"
+          },
+          "tree_desc": {
+            "en": "example configuration, all closed",
+            "es": "configuración de ejemplo, todo cerrado",
+            "de": "Beispielkonfiguration, alles geschlossen",
+            "fr": "configuration d'exemple, tout fermé",
+            "it": "configurazione di esempio, tutto chiuso",
+            "ja": "設定例（すべて閉）",
+            "zh": "示例配置，全部关闭",
+            "pt": "configuração de exemplo, tudo fechado"
+          }
+        },
+        {
+          "name": "docs/",
+          "desc": {
+            "en": "documents of the project",
+            "es": "documentos del proyecto",
+            "de": "Dokumente des Projekts",
+            "fr": "documents du projet",
+            "it": "documenti del progetto",
+            "ja": "プロジェクトの文書",
+            "zh": "项目文档",
+            "pt": "documentos do projeto"
+          },
+          "tree_desc": {
+            "en": "documents of the project",
+            "es": "documentos del proyecto",
+            "de": "Dokumente des Projekts",
+            "fr": "documents du projet",
+            "it": "documenti del progetto",
+            "ja": "プロジェクトの文書",
+            "zh": "项目文档",
+            "pt": "documentos do projeto"
+          }
+        },
+        {
+          "name": "tools/",
+          "desc": {
+            "en": "project tools and CI checks",
+            "es": "herramientas del proyecto y comprobaciones",
+            "de": "Projektwerkzeuge und CI-Prüfungen",
+            "fr": "outils du projet et vérifications de la CI",
+            "it": "strumenti del progetto e controlli della CI",
+            "ja": "プロジェクトのツールと CI の検査",
+            "zh": "项目工具和 CI 检查",
+            "pt": "ferramentas do projeto e verificações da CI"
+          },
+          "tree_desc": {
+            "en": "project tools and CI checks",
+            "es": "herramientas del proyecto y comprobaciones del CI",
+            "de": "Projektwerkzeuge und CI-Prüfungen",
+            "fr": "outils du projet et vérifications de la CI",
+            "it": "strumenti del progetto e controlli della CI",
+            "ja": "プロジェクトのツールと CI の検査",
+            "zh": "项目工具和 CI 检查",
+            "pt": "ferramentas do projeto e verificações da CI"
+          }
+        },
+        {
+          "name": "images/",
+          "desc": {
+            "en": "Media and app icons",
+            "es": "Medios e iconos de la app",
+            "de": "Medien und App-Icons",
+            "fr": "Médias et icônes de l'app",
+            "it": "Media e icone dell'app",
+            "ja": "メディアとアプリアイコン",
+            "zh": "媒体资源与应用图标",
+            "pt": "Multimédia e ícones da aplicação"
+          },
+          "tree_desc": {
+            "en": "Media and app icons",
+            "es": "Medios e iconos de la app",
+            "de": "Medien und App-Icons",
+            "fr": "Médias et icônes de l'app",
+            "it": "Media e icone dell'app",
+            "ja": "メディアとアプリアイコン",
+            "zh": "媒体资源与应用图标",
+            "pt": "Multimédia e ícones da aplicação"
+          }
+        },
+        {
+          "name": ".github/",
+          "desc": {
+            "en": "CI workflow and issue templates",
+            "es": "flujo de CI y plantillas de incidencias",
+            "de": "CI-Workflow und Issue-Vorlagen",
+            "fr": "workflow de CI et modèles de tickets",
+            "it": "workflow di CI e modelli di segnalazione",
+            "ja": "CI ワークフローと Issue テンプレート",
+            "zh": "CI 工作流和 Issue 模板",
+            "pt": "fluxo de CI e modelos de problemas"
+          }
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "project files",
+        "es": "ficheros del proyecto",
+        "de": "Projektdateien",
+        "fr": "fichiers du projet",
+        "it": "file del progetto",
+        "ja": "プロジェクトのファイル",
+        "zh": "项目文件",
+        "pt": "ficheiros do projeto"
+      },
+      "kind": "group",
+      "span": 3,
+      "accent": "c",
+      "columns": 2,
+      "rows": [
+        {
+          "name": "build.sh / build.bat",
+          "desc": {
+            "en": "set up and check",
+            "es": "preparar y comprobar",
+            "de": "einrichten und prüfen",
+            "fr": "préparer et vérifier",
+            "it": "preparare e verificare",
+            "ja": "準備と確認",
+            "zh": "准备并检查",
+            "pt": "preparar e verificar"
+          },
+          "tree_desc": {
+            "en": "venv + editable install + compile-check + tests",
+            "es": "venv + instalación editable + comprobación + pruebas",
+            "de": "venv + editierbare Installation + Prüfung + Tests",
+            "fr": "venv + installation éditable + vérification + tests",
+            "it": "venv + installazione editabile + verifica + test",
+            "ja": "venv + 編集可能インストール + コンパイルチェック + テスト",
+            "zh": "虚拟环境 + 可编辑安装 + 编译检查 + 测试",
+            "pt": "venv + instalação editável + verificação de compilação + testes"
+          }
+        },
+        {
+          "name": "run.sh / run.bat",
+          "desc": {
+            "en": "Forwards a real CLI command",
+            "es": "Reenvía un comando CLI real",
+            "de": "Leitet einen realen CLI-Befehl weiter",
+            "fr": "Transmet une commande CLI réelle",
+            "it": "Inoltra un comando CLI reale",
+            "ja": "実際のCLIコマンドを転送",
+            "zh": "转发一条真实的 CLI 命令",
+            "pt": "Reencaminha um comando real da CLI"
+          },
+          "tree_desc": {
+            "en": "Forwards a real CLI command",
+            "es": "Reenvía un comando CLI real",
+            "de": "Leitet einen realen CLI-Befehl weiter",
+            "fr": "Transmet une commande CLI réelle",
+            "it": "Inoltra un comando CLI reale",
+            "ja": "実際のCLIコマンドを転送",
+            "zh": "转发一条真实的 CLI 命令",
+            "pt": "Reencaminha um comando real da CLI"
+          }
+        },
+        {
+          "name": "bump_version.py",
+          "desc": {
+            "en": "explicit version bump",
+            "es": "Incremento de versión tipo cuentakilómetros",
+            "de": "ausdrückliche Versionserhöhung",
+            "fr": "Incrément de version type compteur",
+            "it": "Incremento di versione stile contachilometri",
+            "ja": "エコシステム全体の「走行距離計」式バージョン",
+            "zh": "显式提升版本",
+            "pt": "Subida de versão ao estilo conta-quilómetros"
+          },
+          "tree_desc": {
+            "en": "explicit version bump",
+            "es": "Incremento de versión tipo cuentakilómetros (solo lo ejecuta el comando `bump` explícito)",
+            "de": "ausdrückliche Versionserhöhung",
+            "fr": "Incrément de version type compteur kilométrique (exécuté seulement par la commande `bump` explicite)",
+            "it": "Incremento di versione stile contachilometri (eseguito solo dal comando `bump` esplicito)",
+            "ja": "エコシステム全体の「走行距離計」式バージョン増分（pyproject.toml + __init__.py）",
+            "zh": "显式提升版本",
+            "pt": "Subida de versão ao estilo conta-quilómetros (executada só pelo comando `bump` explícito)"
+          }
+        },
+        {
+          "name": "bump_manifest_version.py",
+          "desc": {
+            "en": "syncs the manifest version",
+            "es": "sincroniza la versión del manifiesto",
+            "de": "gleicht die Manifest-Version ab",
+            "fr": "synchronise la version du manifeste",
+            "it": "sincronizza la versione del manifesto",
+            "ja": "マニフェストの版を同期",
+            "zh": "同步清单版本",
+            "pt": "sincroniza a versão do manifesto"
+          },
+          "tree_desc": {
+            "en": "Syncs hydra-umc.project.json's version to the native one (--sync)",
+            "es": "Sincroniza la versión de hydra-umc.project.json con la nativa (--sync)",
+            "de": "Synchronisiert die Version von hydra-umc.project.json mit der nativen (--sync)",
+            "fr": "Synchronise la version de hydra-umc.project.json avec la native (--sync)",
+            "it": "Sincronizza la versione di hydra-umc.project.json con quella nativa (--sync)",
+            "ja": "hydra-umc.project.json のバージョンをネイティブのものと同期（--sync）",
+            "zh": "将 hydra-umc.project.json 的版本与原生版本同步（--sync）",
+            "pt": "Sincroniza a versão do hydra-umc.project.json com a nativa (--sync)"
+          }
+        },
+        {
+          "name": "CHANGELOG.md",
+          "desc": {
+            "en": "what changed in each version",
+            "es": "qué cambió en cada versión",
+            "de": "was sich in jeder Version geändert hat",
+            "fr": "ce qui a changé à chaque version",
+            "it": "cosa è cambiato in ogni versione",
+            "ja": "各バージョンの変更点",
+            "zh": "每个版本的变更",
+            "pt": "o que mudou em cada versão"
+          }
+        },
+        {
+          "name": "build-test.sh",
+          "desc": {
+            "en": "non-mutating build check",
+            "es": "comprobación de compilación sin cambios",
+            "de": "Build-Prüfung ohne Änderungen",
+            "fr": "vérification de build sans modification",
+            "it": "controllo di build senza modifiche",
+            "ja": "変更を伴わないビルド確認",
+            "zh": "不修改内容的构建检查",
+            "pt": "verificação de compilação sem alterações"
+          }
+        },
+        {
+          "name": "hydra-umc.project.json",
+          "desc": {
+            "en": "manifest: version, maturity, family",
+            "es": "manifiesto: versión, madurez, familia",
+            "de": "Manifest: Version, Reifegrad, Familie",
+            "fr": "manifeste : version, maturité, famille",
+            "it": "manifesto: versione, maturità, famiglia",
+            "ja": "マニフェスト：バージョン、成熟度、ファミリー",
+            "zh": "清单：版本、成熟度、系列",
+            "pt": "manifesto: versão, maturidade, família"
+          }
+        },
+        {
+          "name": "pyproject.toml",
+          "desc": {
+            "en": "package metadata",
+            "es": "metadatos del paquete",
+            "de": "Paketmetadaten",
+            "fr": "métadonnées du paquet",
+            "it": "metadati del pacchetto",
+            "ja": "パッケージのメタデータ",
+            "zh": "包的元数据",
+            "pt": "metadados do pacote"
+          }
+        },
+        {
+          "name": "test.sh",
+          "desc": {
+            "en": "runs the tests",
+            "es": "ejecuta las pruebas",
+            "de": "führt die Tests aus",
+            "fr": "lance les tests",
+            "it": "esegue i test",
+            "ja": "テストを実行",
+            "zh": "运行测试",
+            "pt": "executa os testes"
+          }
+        }
+      ]
+    }
+  ]
+}

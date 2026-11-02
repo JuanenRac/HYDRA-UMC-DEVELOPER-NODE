@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "ecosystem": "HYDRA-UMC",
+  "name": "HYDRA-UMC-DEVELOPER-NODE",
+  "version": "0.0.1",
+  "role": "service",
+  "stack": "python",
+  "technologies": [
+    "Python 3.11+",
+    "JSON Schema",
+    "SQLite",
+    "git worktree"
+  ],
+  "deployment_target": "dev-server",
+  "maturity": "scaffolding",
+  "evidence": "none",
+  "hardware_bound": false,
+  "family": "Ecosystem Operations",
+  "parent": null,
+  "native_version": {
+    "file": "pyproject.toml",
+    "pattern": "^version\\s*=\\s*\"(\\d+)\\.(\\d+)\\.(\\d+)\""
+  },
+  "build": "Python package built with python -m build (see pyproject.toml); the standard library only, plus the optional SDK extra for the verdict of a before and after run.",
+  "notes": "Developer node of the HYDRA-UMC ecosystem: reads evidence bundles of the local technician (read only), keeps a cache of checkouts by revision (git worktrees over a bare mirror, with a limit in GB), runs executable repro cases and the shared CI of a workspace only after a person approved the exact plan, and writes a status document for dashboards. Every part is closed by default, every tuned value is in the configuration file and nothing leaves the machine. It has not run on a real development host yet."
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JuanenRac/HYDRA-UMC-DEVELOPER-NODE/contracts/ecosystem_ci_report.schema.json",
+  "title": "EcosystemCiReport",
+  "description": "The consolidated result of running the shared CI validator in each repository of a workspace that a person approved.",
+  "type": "object",
+  "required": ["contract", "plan_digest", "started_at", "finished_at", "results", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "contract": { "const": "ecosystem-ci-report/1" },
+    "plan_digest": { "type": "string", "minLength": 64 },
+    "started_at": { "type": "number" },
+    "finished_at": { "type": "number" },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["repo", "status", "exit_code", "seconds", "tail"],
+        "additionalProperties": false,
+        "properties": {
+          "repo": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pass", "fail", "error", "skipped"] },
+          "exit_code": { "type": ["integer", "null"] },
+          "seconds": { "type": "number", "minimum": 0 },
+          "tail": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["pass", "fail", "error", "skipped"],
+      "additionalProperties": false,
+      "properties": {
+        "pass": { "type": "integer", "minimum": 0 },
+        "fail": { "type": "integer", "minimum": 0 },
+        "error": { "type": "integer", "minimum": 0 },
+        "skipped": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

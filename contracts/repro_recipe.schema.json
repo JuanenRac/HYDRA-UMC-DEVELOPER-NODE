@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JuanenRac/HYDRA-UMC-DEVELOPER-NODE/contracts/repro_recipe.schema.json",
+  "title": "ReproRecipe",
+  "description": "A reproduction recipe: the fixed commands that show a failure on one exact revision. Nothing in it runs until a person has approved its exact digest. Every step is an argument list, never a shell string.",
+  "type": "object",
+  "required": ["schema_version", "scenario_id", "repro_case", "steps", "reproduced_when"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "scenario_id": { "type": "string", "minLength": 1 },
+    "repro_case": { "type": "string", "minLength": 1 },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["argv"],
+        "additionalProperties": false,
+        "properties": {
+          "argv": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "cwd": { "type": "string" }
+        }
+      }
+    },
+    "reproduced_when": {
+      "type": "object",
+      "required": ["exit_code_not"],
+      "additionalProperties": false,
+      "properties": {
+        "exit_code_not": { "type": "integer" }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

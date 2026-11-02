@@ -1,0 +1,42 @@
+{
+  "dataDir": "developer-node-data",
+  "language": "en",
+  "ingest": {
+    "enabled": false,
+    "maxBundleBytes": 1000000,
+    "requireTransportMac": true,
+    "secretEnv": "HYDRA_UMC_DEVELOPER_NODE_TRANSPORT_SECRET",
+    "secretFile": "",
+    "expectedToNode": "developer-node",
+    "maxClockSkewSeconds": 300,
+    "nonceRetentionSeconds": 86400
+  },
+  "repro": {
+    "enabled": false,
+    "approvalMaxAgeMinutes": 30,
+    "stepTimeoutSeconds": 60,
+    "maxSteps": 20,
+    "maxOutputBytes": 65536,
+    "allowedCommands": []
+  },
+  "checkouts": {
+    "enabled": false,
+    "mirrorsDir": "mirrors",
+    "worktreesDir": "worktrees",
+    "maxCacheGb": 5.0,
+    "allowedRemotes": [],
+    "gitTimeoutSeconds": 120
+  },
+  "panel": {
+    "enabled": false,
+    "maxJournalEntries": 200
+  },
+  "ecosystemCi": {
+    "enabled": false,
+    "workspace": "",
+    "repos": [],
+    "timeoutSeconds": 600,
+    "tailLines": 12,
+    "approvalMaxAgeMinutes": 30
+  }
+}
