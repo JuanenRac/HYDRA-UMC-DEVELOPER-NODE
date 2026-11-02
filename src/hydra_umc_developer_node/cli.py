@@ -17,7 +17,7 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Any
 
-from . import __version__, approvals, evidence, panel, plugin_ci, repro
+from . import __version__, approvals, evidence, panel, plugin_ci, plugin_full, repro
 from .checkouts import CheckoutCache, CheckoutError
 from .i18n import t
 from .redaction import redact
@@ -94,6 +94,11 @@ def build_parser() -> argparse.ArgumentParser:
     pl.add_parser("plan", help="print the plan of the ecosystem-ci plugin and its digest")
     pl.add_parser("approve", help="a person approves the plan (needs a terminal)")
     pl.add_parser("run", help="run the approved plan and print the consolidated report")
+    for name, text in (("full-plan", "print the plan of the complete mode (every command, repository by repository) and its digest"),
+                       ("full-approve", "a person approves the whole batch by its digest (needs a terminal)"),
+                       ("full-run", "run the approved batch one repository at a time and print the consolidated report")):
+        full = pl.add_parser(name, help=text)
+        full.add_argument("--exclude", action="append", default=[], metavar="REPO", help="leave this repository out of the batch (repeatable)")
     return parser
 
 
@@ -192,6 +197,8 @@ def _plugin(settings: Settings, args: argparse.Namespace) -> int:
     if args.command == "list":
         _print_json([{"name": plugin_ci.NAME, "enabled": settings.ecosystem_ci.enabled}])
         return 0
+    if args.command.startswith("full-"):
+        return _plugin_full(settings, args)
     plan = plugin_ci.build_plan(settings.ecosystem_ci)
     digest = plugin_ci.plan_digest(plan)
     if args.command == "plan":
@@ -206,6 +213,36 @@ def _plugin(settings: Settings, args: argparse.Namespace) -> int:
     summary = report["summary"]
     print(t("msg.ci_done", args.lang, passed=summary["pass"], failed=summary["fail"], errors=summary["error"], skipped=summary["skipped"]))
     return 0 if summary["fail"] == 0 and summary["error"] == 0 else 1
+
+
+def _plugin_full(settings: Settings, args: argparse.Namespace) -> int:
+    exclude = tuple(args.exclude)
+    plan = plugin_full.build_plan(settings.ecosystem_ci, settings.ecosystem_ci_full, exclude)
+    digest = plugin_full.plan_digest(plan)
+    if args.command == "full-plan":
+        _print_json({"plan": plan, "sha256": digest})
+        for line in plugin_full.describe(plan):
+            print(line)
+        print(t("msg.full_plan_hint", args.lang))
+        return 0
+    with _store(settings) as store:
+        if args.command == "full-approve":
+            if not settings.ecosystem_ci_full.enabled:
+                raise plugin_ci.PluginError("ecosystemCiFull is closed: set ecosystemCiFull.enabled to true in the configuration file")
+            for line in plugin_full.describe(plan):
+                print(line)
+            approvals.approve(store, plugin_full.SUBJECT, plugin_full.ACTION, digest)
+            print(t("msg.approved", args.lang, what=f"{plugin_full.NAME} {digest[:12]}"))
+            return 0
+        report = plugin_full.run(plan, store, settings.ecosystem_ci, settings.ecosystem_ci_full, settings.data_path(), exclude)
+    for item in report["results"]:
+        print(t("msg.full_line", args.lang, repo=item["repo"], status=t(f"label.status_{item['status']}", args.lang), seconds=item["seconds"],
+                command=item["command"] or "-"))
+    summary = report["summary"]
+    print(t("msg.full_done", args.lang, passed=summary["pass"], failed=summary["fail"], timeouts=summary["timeout"], skipped=summary["skipped"]))
+    if report["aborted"]:
+        print(t("msg.full_aborted", args.lang, reason=report["aborted"]))
+    return plugin_full.exit_code(report)
 
 
 HANDLERS: dict[str, Callable[[Settings, argparse.Namespace], int]] = {

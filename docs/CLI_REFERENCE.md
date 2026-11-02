@@ -21,6 +21,19 @@ GPL-3.0-or-later - see LICENSE
 | `checkout fetch NAME REMOTE REV` / `list` / `prune` | Make or reuse the worktree of a revision / list the cache / remove the least recently used worktrees until the cache fits its limit. |
 | `panel status` / `panel export` | Print / write the status document. |
 | `plugin list` / `plan` / `approve` / `run` | The `ecosystem-ci` plugin: show the plan and its digest, approve it (at a terminal), run it. |
+| `plugin full-plan [--exclude REPO]...` | The complete mode: print the plan (every command, repository by repository, with the SHA-256 of each script) and its digest. |
+| `plugin full-approve [--exclude REPO]...` | A person approves the whole batch by its digest (needs a terminal; expires; single use). |
+| `plugin full-run [--exclude REPO]...` | Run the approved batch one repository at a time and print the consolidated report. Exit code 1 if anything failed, timed out or the run was cut short. |
+
+The complete mode runs `tools/ci_validate.py` of each repository and, only when the repository declares it, its heavy test. A repository declares it in its manifest:
+
+```json
+{"developer_node": {"full_test": {"interpreter": "python", "script": "tools/build_test.py", "needs_network": false}}}
+```
+
+`interpreter` is `python` or `sh`; `script` is a relative path inside the repository. A repository with no declaration runs only the shared CI (or nothing). Each repository can be left out with `--exclude`, before approval; the approval covers the exact list. Ctrl+C stops the command in progress (and the processes it started), leaves the rest as skipped and still writes the report.
+
+Each result of the report is `pass`, `fail`, `timeout` or `skipped`, with the duration, an exit code and a short redacted tail of the output (`contracts/ecosystem_ci_full_report.schema.json`).
 
 A recipe is a JSON document (`contracts/repro_recipe.schema.json`):
 

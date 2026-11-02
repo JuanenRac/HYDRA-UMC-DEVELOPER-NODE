@@ -18,6 +18,7 @@ The developer node is the place where a failure found on a node of the ecosystem
 | Checkout cache | `checkouts.py` | A bare mirror per remote and one detached git worktree per commit, with a limit in GB set in the configuration; the least recently used worktrees go first. |
 | Panel contract | `panel.py` | The status document (switches, queue, journal, health) that a dashboard or a studio shows. A file; there is no port and no command channel. |
 | Plugin `ecosystem-ci` | `plugin_ci.py` | Runs `tools/ci_validate.py` of each repository of a workspace, one after another, after a person approved the exact plan, and writes one consolidated report. |
+| Plugin `ecosystem-ci`, complete mode | `plugin_full.py` | Adds the heavy test each repository declares in its manifest to the shared CI, as one approved batch: serial, with limits of time, output and free disk, a minimal environment and a consolidated report. |
 | Store | `store.py` | One SQLite file: cases, an append-only journal, approvals, run outcomes and the nonces already seen. |
 
 ## The flow of one incident

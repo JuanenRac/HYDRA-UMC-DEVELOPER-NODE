@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 from hydra_umc_developer_node import i18n
@@ -26,8 +27,10 @@ def test_a_switch_must_be_a_real_boolean() -> None:
 
 
 def test_unknown_keys_and_bad_values_are_errors() -> None:
-    for raw in ({"nope": 1}, {"ingest": {"nope": 1}}, {"language": "xx"}, {"repro": {"maxSteps": 0}}, {"repro": {"maxSteps": True}},
-                {"checkouts": {"maxCacheGb": 0}}, {"checkouts": {"allowedRemotes": [""]}}, {"dataDir": ""}, [], {"panel": []}):
+    bad: list[Any] = [{"nope": 1}, {"ingest": {"nope": 1}}, {"language": "xx"}, {"repro": {"maxSteps": 0}}, {"repro": {"maxSteps": True}},
+                      {"checkouts": {"maxCacheGb": 0}}, {"checkouts": {"allowedRemotes": [""]}}, {"dataDir": ""}, [], {"panel": []},
+                      {"ecosystemCiFull": {"minFreeGb": 0}}, {"ecosystemCiFull": {"perRepoTimeoutSeconds": 0}}, {"ecosystemCiFull": {"allowNetwork": "no"}}]
+    for raw in bad:
         with pytest.raises(SettingsError):
             parse_settings(raw)
 

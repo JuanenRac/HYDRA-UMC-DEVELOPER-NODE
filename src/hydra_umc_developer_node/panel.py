@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from . import __version__, i18n, plugin_ci
+from . import __version__, i18n, plugin_ci, plugin_full
 from .checkouts import CheckoutCache
 from .schema import validate
 from .settings import Settings
@@ -38,6 +38,10 @@ def build_status(settings: Settings, store: Store, now: float | None = None) -> 
     last_report = None
     if report is not None and isinstance(report.get("summary"), dict):
         last_report = {"finished_at": report.get("finished_at"), "summary": report["summary"]}
+    full_report = plugin_full.latest_report(settings.data_path())
+    last_full = None
+    if full_report is not None and isinstance(full_report.get("summary"), dict):
+        last_full = {"finished_at": full_report.get("finished_at"), "aborted": full_report.get("aborted"), "summary": full_report["summary"]}
     status: dict[str, Any] = {
         "contract": "developer-node-status/1",
         "version": __version__,
@@ -56,6 +60,7 @@ def build_status(settings: Settings, store: Store, now: float | None = None) -> 
             "cache_limit_bytes": settings.checkouts.max_cache_bytes,
             "cache_over_limit": cache_bytes > settings.checkouts.max_cache_bytes,
             "last_ci_report": last_report,
+            "last_ci_full_report": last_full,
         },
         "labels": i18n.labels(settings.language),
     }

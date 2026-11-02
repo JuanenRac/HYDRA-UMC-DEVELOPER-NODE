@@ -38,5 +38,18 @@
     "timeoutSeconds": 600,
     "tailLines": 12,
     "approvalMaxAgeMinutes": 30
+  },
+  "ecosystemCiFull": {
+    "enabled": false,
+    "perRepoTimeoutSeconds": 1800,
+    "totalTimeoutSeconds": 7200,
+    "maxOutputBytes": 1000000,
+    "minFreeGb": 10.0,
+    "allowNetwork": false,
+    "includeCiValidate": true,
+    "passEnv": [],
+    "tailLines": 15,
+    "approvalMaxAgeMinutes": 30,
+    "manifestFile": "hydra-umc.project.json"
   }
 }

@@ -76,7 +76,7 @@ Cette version fournit cinq éléments indépendants :
 2. **Cas de reproduction exécutables** (`repro.py`, `approvals.py`) - une recette de listes d'arguments, seulement des commandes autorisées et une approbation liée à son empreinte ; chaque exécution est un `ScenarioOutcome` du SDK et le SDK donne le verdict d'une paire avant et après.
 3. **Cache de checkouts par révision** (`checkouts.py`) - un miroir bare et un worktree git par commit, le commit épinglé est vérifié, une limite en Go est tenue en supprimant les worktrees les moins récemment utilisés.
 4. **Document d'état** (`panel.py`) - file, journal et santé pour un tableau de bord ou un studio, en huit langues, sous forme de fichier.
-5. **Plugin `ecosystem-ci`** (`plugin_ci.py`) - le validateur de CI partagé de chaque dépôt d'un espace de travail, avec un rapport consolidé.
+5. **Plugin `ecosystem-ci`** (`plugin_ci.py`) - le validateur de CI partagé de chaque dépôt d'un espace de travail, avec un rapport consolidé. Dans le mode complet (fermé par défaut), il peut aussi lancer le test lourd que chaque dépôt déclare, comme un lot qu'une personne approuve par son empreinte, un dépôt à la fois, avec des limites de temps, de sortie et d'espace disque libre.
 
 ## 🧩 Rôle dans HYDRA-UMC
 
@@ -141,6 +141,7 @@ HYDRA-UMC-DEVELOPER-NODE/
 │   ├── checkouts.py                cache des checkouts par révision
 │   ├── panel.py                    document d'état pour les tableaux de bord
 │   ├── plugin_ci.py                plugin ecosystem-ci
+│   ├── plugin_full.py              mode complet du plugin ecosystem-ci
 │   ├── approvals.py                approbation par une personne
 │   ├── store.py                    base locale et journal
 │   ├── schema.py                   vérificateur de contrats

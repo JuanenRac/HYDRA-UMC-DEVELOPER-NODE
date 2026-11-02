@@ -180,6 +180,29 @@
           }
         },
         {
+          "name": "plugin_full.py",
+          "desc": {
+            "en": "complete mode of the ecosystem-ci plugin",
+            "es": "modo completo del plugin ecosystem-ci",
+            "de": "vollständiger Modus des Plugins ecosystem-ci",
+            "fr": "mode complet du plugin ecosystem-ci",
+            "it": "modalità completa del plugin ecosystem-ci",
+            "ja": "ecosystem-ci プラグインの完全モード",
+            "zh": "ecosystem-ci 插件的完整模式",
+            "pt": "modo completo do plugin ecosystem-ci"
+          },
+          "tree_desc": {
+            "en": "complete mode of the ecosystem-ci plugin",
+            "es": "modo completo del plugin ecosystem-ci",
+            "de": "vollständiger Modus des Plugins ecosystem-ci",
+            "fr": "mode complet du plugin ecosystem-ci",
+            "it": "modalità completa del plugin ecosystem-ci",
+            "ja": "ecosystem-ci プラグインの完全モード",
+            "zh": "ecosystem-ci 插件的完整模式",
+            "pt": "modo completo do plugin ecosystem-ci"
+          }
+        },
+        {
           "name": "approvals.py",
           "desc": {
             "en": "approval by a person",

@@ -31,3 +31,11 @@ GPL-3.0-or-later - see LICENSE
 | `ecosystemCi` | `enabled` | `false` | Allows the plugin. |
 | | `workspace` / `repos` | empty | The folder with the repositories and the names of those to check. |
 | | `timeoutSeconds` / `tailLines` / `approvalMaxAgeMinutes` | 600 / 12 / 30 | Time limit per repository, lines kept of each output, approval life. |
+| `ecosystemCiFull` | `enabled` | `false` | Allows the complete mode (it also needs `ecosystemCi.enabled`; it uses its `workspace` and `repos`). |
+| | `perRepoTimeoutSeconds` / `totalTimeoutSeconds` | 1800 / 7200 | Time limit of each command and of the whole batch. |
+| | `maxOutputBytes` | 1000000 | A command that writes more is stopped and counted as failed. |
+| | `minFreeGb` | 10.0 | The run is refused, or stops, when the disk of the workspace has less free space. |
+| | `allowNetwork` | `false` | A repository that declares `needs_network` is skipped unless this is true. |
+| | `includeCiValidate` / `manifestFile` | `true` / `hydra-umc.project.json` | Run the shared CI too; the manifest that declares the heavy test. |
+| | `passEnv` | `[]` | Extra names of environment variables to pass (names that look like secrets are never passed). |
+| | `tailLines` / `approvalMaxAgeMinutes` | 15 / 30 | Lines kept of each output, approval life. |

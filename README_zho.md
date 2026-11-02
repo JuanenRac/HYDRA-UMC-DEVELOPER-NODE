@@ -76,7 +76,7 @@ HYDRA-UMC-DEVELOPER-NODE 是生态系统的开发节点：研究某个节点所�
 2. **可执行的复现案例**（`repro.py`、`approvals.py`）- 由参数列表组成的配方，只允许列出的命令，批准与其摘要绑定；每次运行都是 SDK 的 `ScenarioOutcome`，修复前后一对结果的结论由 SDK 给出。
 3. **按修订版本的检出缓存**（`checkouts.py`）- 一个 bare 镜像加每个提交一个 git worktree，固定的提交会被验证，通过删除最久未使用的 worktree 来保持 GB 上限。
 4. **状态文档**（`panel.py`）- 为仪表板或工作室提供队列、日志和健康状况，支持八种语言，以文件形式提供。
-5. **`ecosystem-ci` 插件**（`plugin_ci.py`）- 运行工作区中每个仓库的共享 CI 校验，并生成一份汇总报告。
+5. **`ecosystem-ci` 插件**（`plugin_ci.py`）- 运行工作区中每个仓库的共享 CI 校验，并生成一份汇总报告。在完整模式（默认关闭）下，它还可以运行每个仓库声明的重型测试：由人工按摘要批准的一个批次，一次一个仓库，并对时间、输出和剩余磁盘空间设限。
 
 ## 🧩 在 HYDRA-UMC 中的角色
 
@@ -141,6 +141,7 @@ HYDRA-UMC-DEVELOPER-NODE/
 │   ├── checkouts.py                按修订版本的检出缓存
 │   ├── panel.py                    面向仪表板的状态文档
 │   ├── plugin_ci.py                ecosystem-ci 插件
+│   ├── plugin_full.py              ecosystem-ci 插件的完整模式
 │   ├── approvals.py                由人工批准
 │   ├── store.py                    本地数据库与日志
 │   ├── schema.py                   合约校验

@@ -76,6 +76,27 @@ class EcosystemCiSettings:
 
 
 @dataclass(frozen=True)
+class EcosystemCiFullSettings:
+    """The complete mode of the ecosystem-ci plugin: the heavy tests every repository declares, with hard limits."""
+
+    enabled: bool = False
+    per_repo_timeout_seconds: int = 1800
+    total_timeout_seconds: int = 7200
+    max_output_bytes: int = 1_000_000
+    min_free_gb: float = 10.0
+    allow_network: bool = False
+    include_ci_validate: bool = True
+    pass_env: tuple[str, ...] = ()
+    tail_lines: int = 15
+    approval_max_age_minutes: int = 30
+    manifest_file: str = "hydra-umc.project.json"
+
+    @property
+    def min_free_bytes(self) -> int:
+        return int(self.min_free_gb * GIB)
+
+
+@dataclass(frozen=True)
 class Settings:
     data_dir: str = "developer-node-data"
     language: str = "en"
@@ -84,6 +105,7 @@ class Settings:
     checkouts: CheckoutSettings = field(default_factory=CheckoutSettings)
     panel: PanelSettings = field(default_factory=PanelSettings)
     ecosystem_ci: EcosystemCiSettings = field(default_factory=EcosystemCiSettings)
+    ecosystem_ci_full: EcosystemCiFullSettings = field(default_factory=EcosystemCiFullSettings)
 
     def data_path(self) -> Path:
         return Path(self.data_dir).expanduser()
@@ -95,6 +117,7 @@ class Settings:
             "checkouts": self.checkouts.enabled,
             "panel": self.panel.enabled,
             "ecosystemCi": self.ecosystem_ci.enabled,
+            "ecosystemCiFull": self.ecosystem_ci_full.enabled,
         }
 
 
@@ -138,10 +161,23 @@ _SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
         "tailLines": ("tail_lines", "int"),
         "approvalMaxAgeMinutes": ("approval_max_age_minutes", "int"),
     },
+    "ecosystemCiFull": {
+        "enabled": ("enabled", "bool"),
+        "perRepoTimeoutSeconds": ("per_repo_timeout_seconds", "int"),
+        "totalTimeoutSeconds": ("total_timeout_seconds", "int"),
+        "maxOutputBytes": ("max_output_bytes", "int"),
+        "minFreeGb": ("min_free_gb", "float"),
+        "allowNetwork": ("allow_network", "bool"),
+        "includeCiValidate": ("include_ci_validate", "bool"),
+        "passEnv": ("pass_env", "strs"),
+        "tailLines": ("tail_lines", "int"),
+        "approvalMaxAgeMinutes": ("approval_max_age_minutes", "int"),
+        "manifestFile": ("manifest_file", "str"),
+    },
 }
 _POSITIVE = {"max_bundle_bytes", "approval_max_age_minutes", "step_timeout_seconds", "max_steps", "max_output_bytes",
              "git_timeout_seconds", "max_journal_entries", "timeout_seconds", "tail_lines", "max_clock_skew_seconds",
-             "nonce_retention_seconds"}
+             "nonce_retention_seconds", "per_repo_timeout_seconds", "total_timeout_seconds"}
 
 
 def _convert(section: str, key: str, kind: str, value: Any) -> Any:
@@ -179,7 +215,7 @@ def _section(name: str, raw: Any, cls: type) -> Any:
         converted = _convert(name, key, kind, value)
         if attribute in _POSITIVE and converted < 1:
             raise SettingsError(f"{name}.{key} must be at least 1")
-        if attribute == "max_cache_gb" and converted <= 0:
+        if attribute in ("max_cache_gb", "min_free_gb") and converted <= 0:
             raise SettingsError(f"{name}.{key} must be greater than 0")
         values[attribute] = converted
     return cls(**values)
@@ -199,7 +235,7 @@ def parse_settings(raw: Any) -> Settings:
     if not isinstance(data_dir, str) or not data_dir:
         raise SettingsError("dataDir must be a non-empty text")
     classes = {"ingest": IngestSettings, "repro": ReproSettings, "checkouts": CheckoutSettings, "panel": PanelSettings,
-               "ecosystemCi": EcosystemCiSettings}
+               "ecosystemCi": EcosystemCiSettings, "ecosystemCiFull": EcosystemCiFullSettings}
     sections = {name: _section(name, raw[name], cls) for name, cls in classes.items() if name in raw}
     return Settings(
         data_dir=data_dir,
@@ -209,6 +245,7 @@ def parse_settings(raw: Any) -> Settings:
         checkouts=sections.get("checkouts", CheckoutSettings()),
         panel=sections.get("panel", PanelSettings()),
         ecosystem_ci=sections.get("ecosystemCi", EcosystemCiSettings()),
+        ecosystem_ci_full=sections.get("ecosystemCiFull", EcosystemCiFullSettings()),
     )
 
 

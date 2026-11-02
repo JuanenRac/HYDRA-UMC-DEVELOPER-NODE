@@ -49,7 +49,8 @@
         "cache_bytes": { "type": "integer", "minimum": 0 },
         "cache_limit_bytes": { "type": "integer", "minimum": 0 },
         "cache_over_limit": { "type": "boolean" },
-        "last_ci_report": { "type": ["object", "null"] }
+        "last_ci_report": { "type": ["object", "null"] },
+        "last_ci_full_report": { "type": ["object", "null"] }
       }
     },
     "labels": {

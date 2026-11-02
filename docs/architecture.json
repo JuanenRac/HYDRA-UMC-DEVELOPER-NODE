@@ -117,14 +117,15 @@
       "id": "pan",
       "column": 1,
       "level": "tested",
-      "title": "panel.py / plugin_ci.py",
+      "title": "panel.py / plugin_*.py",
       "lines": [
         "status document and the",
-        "ecosystem-ci report"
+        "ecosystem-ci reports"
       ],
       "code": [
         "src/hydra_umc_developer_node/panel.py",
-        "src/hydra_umc_developer_node/plugin_ci.py"
+        "src/hydra_umc_developer_node/plugin_ci.py",
+        "src/hydra_umc_developer_node/plugin_full.py"
       ]
     }
   ],
