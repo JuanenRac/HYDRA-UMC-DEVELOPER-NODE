@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
-from hydra_umc_developer_node import cli
+from hydra_umc_developer_node import __version__, cli
 from support import SECRET, make_bundle, make_message, make_repo, write_json
 
 import time
@@ -24,7 +24,7 @@ def test_version_and_usage(capsys: pytest.CaptureFixture[str]) -> None:
     with pytest.raises(SystemExit) as stop:
         cli.main(["--version"])
     assert stop.value.code == 0
-    assert "0.0.1" in capsys.readouterr().out
+    assert __version__ in capsys.readouterr().out
     with pytest.raises(SystemExit) as stop:
         cli.main([])
     assert stop.value.code == 2
