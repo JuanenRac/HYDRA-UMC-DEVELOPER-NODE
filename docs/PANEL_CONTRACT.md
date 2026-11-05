@@ -18,3 +18,7 @@ GPL-3.0-or-later - see LICENSE
 | `labels` | The texts of the panel in the language of the document (eight languages are available). |
 
 The document holds counts, kinds and short details only: never a bundle, a recipe or the output of a command. It has no command channel: a dashboard shows it and cannot change the node through it. How the file reaches a dashboard (an authenticated tunnel, a copy) is decided by the dashboard's side; the node opens no port.
+
+## Sending the document to the server: `panel push`
+
+With `serverPush.enabled` (off by default, and `panel.enabled` too), `hydra-umc-developer-node panel push` builds the same document and sends it with `POST <serverPush.url>/api/ingest/developer-node/status`. The node signs in with its own token, `Authorization: Bearer <token>` and `X-Node-Id: <serverPush.nodeId>`; the server keeps only the hash of each node token, so a node can be added or removed there without touching the others. The address must be `https` (plain `http` is accepted only for this machine), a redirect is never followed, a token that is missing or shorter than 16 characters sends nothing, and neither an error nor the output ever carries the token. The server answers `201` with the node and the sequence of the record, and keeps the latest document of each node in a signed, chained record with a retention. The document is the one described above; it still carries no command.

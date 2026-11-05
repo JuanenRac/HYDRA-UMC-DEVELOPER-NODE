@@ -31,6 +31,14 @@
     "enabled": false,
     "maxJournalEntries": 200
   },
+  "serverPush": {
+    "enabled": false,
+    "url": "",
+    "nodeId": "",
+    "tokenEnv": "HYDRA_UMC_DEVELOPER_NODE_TOKEN",
+    "tokenFile": "",
+    "timeoutSeconds": 10
+  },
   "ecosystemCi": {
     "enabled": false,
     "workspace": "",

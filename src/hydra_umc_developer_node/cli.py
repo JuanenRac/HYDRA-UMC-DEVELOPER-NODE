@@ -88,6 +88,7 @@ def build_parser() -> argparse.ArgumentParser:
     pn = groups.add_parser("panel", help="the status document for a dashboard").add_subparsers(dest="command", required=True)
     pn.add_parser("status")
     pn.add_parser("export", help="write <dataDir>/panel/status.json")
+    pn.add_parser("push", help="send the status document to HYDRA-UMC-SERVER with the token of this node (needs serverPush.enabled)")
 
     pl = groups.add_parser("plugin", help="plugins").add_subparsers(dest="command", required=True)
     pl.add_parser("list")
@@ -188,6 +189,8 @@ def _panel(settings: Settings, args: argparse.Namespace) -> int:
     with _store(settings) as store:
         if args.command == "status":
             _print_json(panel.build_status(settings, store))
+        elif args.command == "push":
+            _print_json(panel.push_status(settings, store))
         else:
             print(panel.export_status(settings, store))
     return 0

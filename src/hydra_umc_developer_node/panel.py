@@ -14,6 +14,9 @@ from __future__ import annotations
 import json
 import os
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -78,3 +81,65 @@ def export_status(settings: Settings, store: Store, now: float | None = None) ->
     target = folder / "status.json"
     os.replace(temporary, target)
     return target
+
+
+class PushError(PanelError):
+    """The status document could not be handed to the server."""
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """A redirect is never followed: the token would travel to a place the operator did not name."""
+
+    def redirect_request(self, *args: Any, **kwargs: Any) -> None:
+        return None
+
+
+def _push_token(settings: Settings) -> str:
+    push = settings.server_push
+    token = ""
+    if push.token_file:
+        try:
+            token = Path(push.token_file).expanduser().read_text(encoding="utf-8").strip()
+        except OSError as error:
+            raise PushError(f"cannot read serverPush.tokenFile: {error.strerror or 'error'}") from error
+    elif push.token_env:
+        token = os.environ.get(push.token_env, "").strip()
+    if len(token) < 16:
+        raise PushError("the token of this node is missing or too short (serverPush.tokenEnv or serverPush.tokenFile)")
+    return token
+
+
+def _push_url(settings: Settings) -> str:
+    push = settings.server_push
+    parsed = urllib.parse.urlparse(push.url)
+    loopback = parsed.hostname in ("127.0.0.1", "localhost", "::1")
+    if parsed.scheme != "https" and not (parsed.scheme == "http" and loopback):
+        raise PushError("serverPush.url must be an https URL (plain http is accepted only for this machine)")
+    if not parsed.hostname or parsed.username or parsed.password:
+        raise PushError("serverPush.url must name a host and carry no credentials")
+    return push.url.rstrip("/") + "/api/ingest/developer-node/status"
+
+
+def push_status(settings: Settings, store: Store, now: float | None = None) -> dict[str, Any]:
+    """Sends the status document to HYDRA-UMC-SERVER with the token of this node. Off unless `serverPush.enabled`; HTTPS only (a plain
+    http URL is accepted for this machine alone); a redirect is not followed; the token is never printed or put in an error."""
+    push = settings.server_push
+    if not push.enabled:
+        raise PanelError("serverPush is closed: set serverPush.enabled to true in the configuration file")
+    if not push.node_id:
+        raise PushError("serverPush.nodeId is empty")
+    url = _push_url(settings)
+    token = _push_token(settings)
+    body = json.dumps(build_status(settings, store, now), ensure_ascii=False).encode("utf-8")
+    request = urllib.request.Request(url, data=body, method="POST", headers={
+        "Content-Type": "application/json", "Authorization": f"Bearer {token}", "X-Node-Id": push.node_id,
+    })
+    opener = urllib.request.build_opener(_NoRedirect)
+    try:
+        with opener.open(request, timeout=push.timeout_seconds) as response:
+            answer = json.loads(response.read(65536) or b"{}")
+            return {"status": response.status, "answer": answer}
+    except urllib.error.HTTPError as error:
+        raise PushError(f"the server refused the status document ({error.code})") from None
+    except (urllib.error.URLError, OSError, ValueError) as error:
+        raise PushError(f"the server could not be reached: {type(error).__name__}") from None

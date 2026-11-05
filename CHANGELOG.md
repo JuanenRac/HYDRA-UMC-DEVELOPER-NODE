@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **`panel push` sends the status document to HYDRA-UMC-SERVER with the token of this node (`serverPush`, off by default):** `POST /api/ingest/developer-node/status` with `Authorization: Bearer <token>` and `X-Node-Id`. HTTPS only (plain http for this machine alone), no redirect is followed, a token that is missing or too short sends nothing, and the token is never printed or put in an error. The token comes from an environment variable or a file, never from the configuration file. 8 tests.
+
 - **The build test of the repository compiles only on CI or when allowed:** for the stacks that compile (`rust`, `go`, `android`, `flutter`, `firmware-c`), `tools/build_test.py` prints `BUILD_TEST=SKIPPED` with exit status 2 on a plain PC, never a pass; `ALLOW_LOCAL_BUILD=1` allows it and a CI runner always may. The `python` and `node` stacks are not locked.
 
 ## [0.0.2] - A full mode of the ecosystem CI plugin that runs the heavy tests of every repository after one approval of the whole batch, one repository at a time, with limits of time, output and free disk, and a consolidated report

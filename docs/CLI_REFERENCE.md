@@ -20,6 +20,7 @@ GPL-3.0-or-later - see LICENSE
 | `repro compare CASE SCENARIO` | The verdict of the stored before and after runs, computed by the SDK (needs the `sdk` extra). |
 | `checkout fetch NAME REMOTE REV` / `list` / `prune` | Make or reuse the worktree of a revision / list the cache / remove the least recently used worktrees until the cache fits its limit. |
 | `panel status` / `panel export` | Print / write the status document. |
+| `panel push` | Send the status document to HYDRA-UMC-SERVER with the token of this node (needs `serverPush.enabled`). |
 | `plugin list` / `plan` / `approve` / `run` | The `ecosystem-ci` plugin: show the plan and its digest, approve it (at a terminal), run it. |
 | `plugin full-plan [--exclude REPO]...` | The complete mode: print the plan (every command, repository by repository, with the SHA-256 of each script) and its digest. |
 | `plugin full-approve [--exclude REPO]...` | A person approves the whole batch by its digest (needs a terminal; expires; single use). |

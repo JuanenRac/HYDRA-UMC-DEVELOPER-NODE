@@ -28,6 +28,10 @@ GPL-3.0-or-later - see LICENSE
 | | `mirrorsDir` / `worktreesDir` / `gitTimeoutSeconds` | `mirrors` / `worktrees` / 120 | Folders (inside `dataDir`) and the time limit of git. |
 | `panel` | `enabled` | `false` | Allows `panel status` and `panel export`. |
 | | `maxJournalEntries` | 200 | Entries of the journal in the status document. |
+| `serverPush` | `enabled` | `false` | Allows `panel push`, which sends the status document to HYDRA-UMC-SERVER (it also needs `panel.enabled`). |
+| | `url` / `nodeId` | empty | The base address of the server (`https`; plain `http` is accepted only for this machine) and the name of this node there. |
+| | `tokenEnv` / `tokenFile` | `HYDRA_UMC_DEVELOPER_NODE_TOKEN` / empty | Where the token of this node is read from (the file wins when set). The token is never in this file and is never printed. |
+| | `timeoutSeconds` | 10 | Time limit of the request. |
 | `ecosystemCi` | `enabled` | `false` | Allows the plugin. |
 | | `workspace` / `repos` | empty | The folder with the repositories and the names of those to check. |
 | | `timeoutSeconds` / `tailLines` / `approvalMaxAgeMinutes` | 600 / 12 / 30 | Time limit per repository, lines kept of each output, approval life. |

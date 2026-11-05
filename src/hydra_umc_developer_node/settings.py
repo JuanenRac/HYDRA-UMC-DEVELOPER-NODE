@@ -66,6 +66,18 @@ class PanelSettings:
 
 
 @dataclass(frozen=True)
+class ServerPushSettings:
+    """Sending the status document to HYDRA-UMC-SERVER (`panel push`). Off by default; the token of the node is never in this file."""
+
+    enabled: bool = False
+    url: str = ""
+    node_id: str = ""
+    token_env: str = "HYDRA_UMC_DEVELOPER_NODE_TOKEN"
+    token_file: str = ""
+    timeout_seconds: int = 10
+
+
+@dataclass(frozen=True)
 class EcosystemCiSettings:
     enabled: bool = False
     workspace: str = ""
@@ -104,6 +116,7 @@ class Settings:
     repro: ReproSettings = field(default_factory=ReproSettings)
     checkouts: CheckoutSettings = field(default_factory=CheckoutSettings)
     panel: PanelSettings = field(default_factory=PanelSettings)
+    server_push: ServerPushSettings = field(default_factory=ServerPushSettings)
     ecosystem_ci: EcosystemCiSettings = field(default_factory=EcosystemCiSettings)
     ecosystem_ci_full: EcosystemCiFullSettings = field(default_factory=EcosystemCiFullSettings)
 
@@ -116,6 +129,7 @@ class Settings:
             "repro": self.repro.enabled,
             "checkouts": self.checkouts.enabled,
             "panel": self.panel.enabled,
+            "serverPush": self.server_push.enabled,
             "ecosystemCi": self.ecosystem_ci.enabled,
             "ecosystemCiFull": self.ecosystem_ci_full.enabled,
         }
@@ -152,6 +166,14 @@ _SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
     "panel": {
         "enabled": ("enabled", "bool"),
         "maxJournalEntries": ("max_journal_entries", "int"),
+    },
+    "serverPush": {
+        "enabled": ("enabled", "bool"),
+        "url": ("url", "str"),
+        "nodeId": ("node_id", "str"),
+        "tokenEnv": ("token_env", "str"),
+        "tokenFile": ("token_file", "str"),
+        "timeoutSeconds": ("timeout_seconds", "int"),
     },
     "ecosystemCi": {
         "enabled": ("enabled", "bool"),
@@ -235,7 +257,7 @@ def parse_settings(raw: Any) -> Settings:
     if not isinstance(data_dir, str) or not data_dir:
         raise SettingsError("dataDir must be a non-empty text")
     classes = {"ingest": IngestSettings, "repro": ReproSettings, "checkouts": CheckoutSettings, "panel": PanelSettings,
-               "ecosystemCi": EcosystemCiSettings, "ecosystemCiFull": EcosystemCiFullSettings}
+               "serverPush": ServerPushSettings, "ecosystemCi": EcosystemCiSettings, "ecosystemCiFull": EcosystemCiFullSettings}
     sections = {name: _section(name, raw[name], cls) for name, cls in classes.items() if name in raw}
     return Settings(
         data_dir=data_dir,
@@ -244,6 +266,7 @@ def parse_settings(raw: Any) -> Settings:
         repro=sections.get("repro", ReproSettings()),
         checkouts=sections.get("checkouts", CheckoutSettings()),
         panel=sections.get("panel", PanelSettings()),
+        server_push=sections.get("serverPush", ServerPushSettings()),
         ecosystem_ci=sections.get("ecosystemCi", EcosystemCiSettings()),
         ecosystem_ci_full=sections.get("ecosystemCiFull", EcosystemCiFullSettings()),
     )
