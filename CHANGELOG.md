@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The build test of the repository compiles only on CI or when allowed:** for the stacks that compile (`rust`, `go`, `android`, `flutter`, `firmware-c`), `tools/build_test.py` prints `BUILD_TEST=SKIPPED` with exit status 2 on a plain PC, never a pass; `ALLOW_LOCAL_BUILD=1` allows it and a CI runner always may. The `python` and `node` stacks are not locked.
+
 ## [0.0.2] - A full mode of the ecosystem CI plugin that runs the heavy tests of every repository after one approval of the whole batch, one repository at a time, with limits of time, output and free disk, and a consolidated report
 
 - **Complete mode of the `ecosystem-ci` plugin, closed by default:** besides the shared CI, it can run the heavy test a repository declares in its manifest (`developer_node.full_test`); a repository that declares nothing runs nothing. The plan lists every command repository by repository with the SHA-256 of each script, and a person approves the whole batch by its digest (it expires and is used up by the run) after leaving out the repositories they do not want.
