@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-86%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**Ehrlichkeitsprüfung - was heute wirklich läuft:** die Beleg-Aufnahme (Signatur, Nonce, Prüfsumme, Geheimnisprüfung), die ausführbaren Reproduktionsfälle mit an einen Digest gebundenen Freigaben, der Checkout-Cache mit seinem Limit, das Statusdokument, das Plugin `ecosystem-ci` und die Texte in acht Sprachen sind echt und getestet (86 automatische Tests, mit lokalen Git-Repositories und lokalen Prozessen). Der Knoten lief nicht auf einem echten Entwicklungshost, ein Rezept ist nur durch eine Erlaubnisliste und eine minimale Umgebung isoliert, und nichts nimmt von selbst Arbeit aus der Warteschlange. Was genau ausgeliefert wurde, steht in `CHANGELOG.md`.
+**Ehrlichkeitsprüfung - was heute wirklich läuft:** die Beleg-Aufnahme (Signatur, Nonce, Prüfsumme, Geheimnisprüfung), die ausführbaren Reproduktionsfälle mit an einen Digest gebundenen Freigaben, der Checkout-Cache mit seinem Limit, das Statusdokument, das Plugin `ecosystem-ci` und die Texte in acht Sprachen sind echt und getestet (94 automatische Tests, mit lokalen Git-Repositories und lokalen Prozessen). Der Knoten lief nicht auf einem echten Entwicklungshost, ein Rezept ist nur durch eine Erlaubnisliste und eine minimale Umgebung isoliert, und nichts nimmt von selbst Arbeit aus der Warteschlange. Was genau ausgeliefert wurde, steht in `CHANGELOG.md`.
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | Version | `0.0.2` |
 | Reifegrad | Gerüst |
-| Tests | 86 (`python -m pytest -q tests`) |
+| Tests | 94 (`python -m pytest -q tests`) |
 | Technik | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | Ziel | Ein Entwicklungsserver |
 | Auf echter Hardware | Nicht zutreffend: nichts hiervon läuft auf Hardware |
@@ -56,7 +56,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Nur Struktur und erste Teile; der größte Teil der Arbeit steht noch aus |
-| Tests | 🟡 | 86 automatische Tests, bei jeder Änderung ausgeführt |
+| Tests | 🟡 | 94 automatische Tests, bei jeder Änderung ausgeführt |
 | Echte Hardware | 🟡 | Nicht zutreffend: nichts hiervon läuft auf Hardware |
 | Schnittstelle und Protokolle | 🟡 | Die angebotenen Routen oder Nachrichten sind dokumentiert und mit einem Client getestet; noch nicht jeder Client hat sie benutzt |
 | Integration | 🟡 | Seine Nachrichten und Routen werden gegen die gemeinsamen Verträge des SDK geprüft; es lief noch nicht zusammen mit der echten Ausrüstung |
@@ -100,7 +100,7 @@ Benötigt Python 3.11 oder neuer.
 
 ## 🧪 Tests
 
-86 automatische Tests laufen mit `python -m pytest -q tests`. Sie brauchen weder Hardware noch etwas außerhalb dieses Rechners.
+94 automatische Tests laufen mit `python -m pytest -q tests`. Sie brauchen weder Hardware noch etwas außerhalb dieses Rechners.
 
 Die CI führt `HYDRA_UMC_CI=1 python tools/ci_validate.py` aus; das prüft das Manifest, die Dokumente, die acht READMEs und die Bilder.
 

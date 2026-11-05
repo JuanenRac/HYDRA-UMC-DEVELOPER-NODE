@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-86%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**诚实检查 - 目前实际能运行的内容：** 证据接收（签名、nonce、校验和、机密检查）、批准与摘要绑定的可执行复现案例、带上限的检出缓存、状态文档、`ecosystem-ci` 插件以及八种语言的文本都是真实且经过测试的（86 个自动测试，使用本地 git 仓库和本地进程）。该节点尚未在真实开发主机上运行，配方除白名单和最小环境外没有其他隔离，也没有任何东西会自行从队列取活。已交付的确切内容见 `CHANGELOG.md`。
+**诚实检查 - 目前实际能运行的内容：** 证据接收（签名、nonce、校验和、机密检查）、批准与摘要绑定的可执行复现案例、带上限的检出缓存、状态文档、`ecosystem-ci` 插件以及八种语言的文本都是真实且经过测试的（94 个自动测试，使用本地 git 仓库和本地进程）。该节点尚未在真实开发主机上运行，配方除白名单和最小环境外没有其他隔离，也没有任何东西会自行从队列取活。已交付的确切内容见 `CHANGELOG.md`。
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | 版本 | `0.0.2` |
 | 成熟度 | 雏形 |
-| 测试 | 86 (`python -m pytest -q tests`) |
+| 测试 | 94 (`python -m pytest -q tests`) |
 | 技术栈 | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | 目标 | 开发服务器 |
 | 真实硬件 | 不适用：这里的内容不在硬件上运行 |
@@ -56,7 +56,7 @@ GPL-3.0-or-later - see LICENSE
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 软件 | 🟠 | 目前只有结构和最初的部分，大部分工作尚未完成 |
-| 测试 | 🟡 | 86 项自动测试，每次变更都会运行 |
+| 测试 | 🟡 | 94 项自动测试，每次变更都会运行 |
 | 真实硬件 | 🟡 | 不适用：这里的内容不在硬件上运行 |
 | 接口与协议 | 🟡 | 提供的路由或消息已有文档，并用客户端测试过；尚未被所有客户端使用 |
 | 集成 | 🟡 | 其消息和路由已对照 SDK 的共享契约检查；尚未与真实设备一起运行 |
@@ -100,7 +100,7 @@ HYDRA-UMC-DEVELOPER-NODE 是生态系统的开发节点：研究某个节点所�
 
 ## 🧪 测试
 
-运行 `python -m pytest -q tests` 会执行 86 个自动测试。 不需要硬件，也不需要这台机器以外的任何东西。
+运行 `python -m pytest -q tests` 会执行 94 个自动测试。 不需要硬件，也不需要这台机器以外的任何东西。
 
 CI 运行 `HYDRA_UMC_CI=1 python tools/ci_validate.py`，检查清单、文档、八个 README 和图片。
 

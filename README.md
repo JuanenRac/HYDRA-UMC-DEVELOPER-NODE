@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-86%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**Honesty check - what actually runs today:** the evidence intake (signature, nonce, checksum, secret check), the executable repro cases with approvals bound to a digest, the checkout cache with its limit, the status document, the `ecosystem-ci` plugin and the eight-language texts are real and tested (86 automated tests, run with local git repositories and local processes). The node has not run on a real development host, a recipe is not isolated beyond an allow-list and a minimal environment, and nothing takes work from the queue by itself. See `CHANGELOG.md` for exactly what has shipped.
+**Honesty check - what actually runs today:** the evidence intake (signature, nonce, checksum, secret check), the executable repro cases with approvals bound to a digest, the checkout cache with its limit, the status document, the `ecosystem-ci` plugin and the eight-language texts are real and tested (94 automated tests, run with local git repositories and local processes). The node has not run on a real development host, a recipe is not isolated beyond an allow-list and a minimal environment, and nothing takes work from the queue by itself. See `CHANGELOG.md` for exactly what has shipped.
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | Version | `0.0.2` |
 | Maturity | Scaffolding |
-| Tests | 86 (`python -m pytest -q tests`) |
+| Tests | 94 (`python -m pytest -q tests`) |
 | Stack | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | Target | A development server |
 | On real hardware | Not applicable: nothing here runs on hardware |
@@ -56,7 +56,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | Structure and first pieces only; most of the work is still to do |
-| Tests | 🟡 | 86 automated tests, run on every change |
+| Tests | 🟡 | 94 automated tests, run on every change |
 | Real hardware | 🟡 | Not applicable: nothing here runs on hardware |
 | Interface and protocols | 🟡 | The routes or messages it offers are documented and tested with a client; not every client has used them yet |
 | Integration | 🟡 | Its messages and routes are checked against the shared contracts of the SDK; it has not run together with the real equipment |
@@ -100,7 +100,7 @@ Requires Python 3.11 or newer.
 
 ## 🧪 Testing
 
-86 automated tests run with `python -m pytest -q tests`. They need no hardware and nothing outside this machine.
+94 automated tests run with `python -m pytest -q tests`. They need no hardware and nothing outside this machine.
 
 The CI runs `HYDRA_UMC_CI=1 python tools/ci_validate.py`, which checks the manifest, the documents, the eight READMEs and the pictures.
 

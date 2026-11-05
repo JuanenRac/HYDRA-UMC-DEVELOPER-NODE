@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-86%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**正直さの確認 - 現在実際に動くもの：** 証拠の取り込み（署名、nonce、チェックサム、秘密情報の確認）、ダイジェストに結び付いた承認を持つ実行可能な再現ケース、上限付きのチェックアウトキャッシュ、状態文書、`ecosystem-ci` プラグイン、8 言語のテキストは実装済みでテスト済みです（自動テスト 86 件、ローカルの git リポジトリとローカルのプロセスで実行）。ノードは実際の開発ホストでは動作しておらず、レシピは許可リストと最小限の環境以上には隔離されておらず、キューから自動で作業を取り出すものはありません。出荷済みの内容は `CHANGELOG.md` を参照してください。
+**正直さの確認 - 現在実際に動くもの：** 証拠の取り込み（署名、nonce、チェックサム、秘密情報の確認）、ダイジェストに結び付いた承認を持つ実行可能な再現ケース、上限付きのチェックアウトキャッシュ、状態文書、`ecosystem-ci` プラグイン、8 言語のテキストは実装済みでテスト済みです（自動テスト 94 件、ローカルの git リポジトリとローカルのプロセスで実行）。ノードは実際の開発ホストでは動作しておらず、レシピは許可リストと最小限の環境以上には隔離されておらず、キューから自動で作業を取り出すものはありません。出荷済みの内容は `CHANGELOG.md` を参照してください。
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | バージョン | `0.0.2` |
 | 成熟度 | 足場段階 |
-| テスト | 86 (`python -m pytest -q tests`) |
+| テスト | 94 (`python -m pytest -q tests`) |
 | 技術 | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | 対象 | 開発用サーバー |
 | 実機での確認 | 対象外：ここにあるものはハードウェア上では動きません |
@@ -56,7 +56,7 @@ GPL-3.0-or-later - see LICENSE
 | 領域 | 状態 | ここでの意味 |
 |---|---|---|
 | ソフトウェア | 🟠 | 構造と最初の部品のみで、作業の大部分はこれからです |
-| テスト | 🟡 | 自動テスト 86 件。変更のたびに実行されます |
+| テスト | 🟡 | 自動テスト 94 件。変更のたびに実行されます |
 | 実機 | 🟡 | 対象外：ここにあるものはハードウェア上では動きません |
 | インターフェースとプロトコル | 🟡 | 提供するルートやメッセージは文書化され、クライアントで試験済みです。すべてのクライアントがまだ使ったわけではありません |
 | 連携 | 🟡 | メッセージとルートは SDK の共通契約に照らして検証されていますが、実機と一緒に動かしたことはありません |
@@ -100,7 +100,7 @@ Python 3.11 以上が必要です。
 
 ## 🧪 テスト
 
-`python -m pytest -q tests` で自動テスト 86 件を実行します。 ハードウェアも、このマシンの外にあるものも必要ありません。
+`python -m pytest -q tests` で自動テスト 94 件を実行します。 ハードウェアも、このマシンの外にあるものも必要ありません。
 
 CI は `HYDRA_UMC_CI=1 python tools/ci_validate.py` を実行し、マニフェスト、文書、8 つの README、図を検査します。
 

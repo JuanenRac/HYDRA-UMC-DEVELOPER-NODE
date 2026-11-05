@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-86%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**Vérification d'honnêteté - ce qui fonctionne aujourd'hui :** l'ingestion des preuves (signature, nonce, somme de contrôle, contrôle des secrets), les cas de reproduction exécutables avec des approbations liées à une empreinte, le cache de checkouts avec sa limite, le document d'état, le plugin `ecosystem-ci` et les textes en huit langues sont réels et testés (86 tests automatiques, avec des dépôts git locaux et des processus locaux). Le nœud n'a pas tourné sur un vrai hôte de développement, une recette n'est pas isolée au-delà d'une liste d'autorisation et d'un environnement minimal, et rien ne prend du travail dans la file tout seul. Voir `CHANGELOG.md` pour ce qui a été livré exactement.
+**Vérification d'honnêteté - ce qui fonctionne aujourd'hui :** l'ingestion des preuves (signature, nonce, somme de contrôle, contrôle des secrets), les cas de reproduction exécutables avec des approbations liées à une empreinte, le cache de checkouts avec sa limite, le document d'état, le plugin `ecosystem-ci` et les textes en huit langues sont réels et testés (94 tests automatiques, avec des dépôts git locaux et des processus locaux). Le nœud n'a pas tourné sur un vrai hôte de développement, une recette n'est pas isolée au-delà d'une liste d'autorisation et d'un environnement minimal, et rien ne prend du travail dans la file tout seul. Voir `CHANGELOG.md` pour ce qui a été livré exactement.
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | Version | `0.0.2` |
 | Maturité | Ébauche |
-| Tests | 86 (`python -m pytest -q tests`) |
+| Tests | 94 (`python -m pytest -q tests`) |
 | Technologie | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | Cible | Un serveur de développement |
 | Sur matériel réel | Sans objet : rien ici ne s'exécute sur du matériel |
@@ -56,7 +56,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Seulement la structure et les premières pièces ; l'essentiel du travail reste à faire |
-| Tests | 🟡 | 86 tests automatiques, exécutés à chaque modification |
+| Tests | 🟡 | 94 tests automatiques, exécutés à chaque modification |
 | Matériel réel | 🟡 | Sans objet : rien ici ne s'exécute sur du matériel |
 | Interface et protocoles | 🟡 | Les routes ou les messages proposés sont documentés et testés avec un client ; tous les clients ne les ont pas encore utilisés |
 | Intégration | 🟡 | Ses messages et ses routes sont vérifiés par rapport aux contrats partagés du SDK ; il n'a pas fonctionné avec l'équipement réel |
@@ -100,7 +100,7 @@ Nécessite Python 3.11 ou plus récent.
 
 ## 🧪 Tests
 
-86 tests automatiques s'exécutent avec `python -m pytest -q tests`. Ils n'ont besoin ni de matériel ni de rien en dehors de cette machine.
+94 tests automatiques s'exécutent avec `python -m pytest -q tests`. Ils n'ont besoin ni de matériel ni de rien en dehors de cette machine.
 
 La CI exécute `HYDRA_UMC_CI=1 python tools/ci_validate.py`, qui vérifie le manifeste, les documents, les huit README et les images.
 
