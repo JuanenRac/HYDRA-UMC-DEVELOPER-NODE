@@ -19,14 +19,14 @@ GPL-3.0-or-later - see LICENSE
   <img src="https://img.shields.io/badge/Language-Python%203.11%2B-blue.svg" alt="Language">
   <img src="https://img.shields.io/badge/Core-stdlib%20only-brightgreen.svg" alt="Core">
   <img src="https://img.shields.io/badge/Parts-closed%20by%20default-367BF5.svg" alt="Parts">
-  <img src="https://img.shields.io/badge/Tests-94%20passing-2ea44f.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-95%20passing-2ea44f.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** a ingestão de provas (assinatura, nonce, soma de verificação, verificação de segredos), os casos de reprodução executáveis com aprovações ligadas a um resumo, a cache de checkouts com o seu limite, o documento de estado, o plugin `ecosystem-ci` e os textos em oito idiomas são reais e estão testados (94 testes automáticos, com repositórios git locais e processos locais). O nó não correu num anfitrião de desenvolvimento real, uma receita não está isolada além de uma lista de permitidos e de um ambiente mínimo, e nada tira trabalho da fila sozinho. Veja o `CHANGELOG.md` para saber exatamente o que foi entregue.
+**Verificação de honestidade - o que funciona hoje:** a ingestão de provas (assinatura, nonce, soma de verificação, verificação de segredos), os casos de reprodução executáveis com aprovações ligadas a um resumo, a cache de checkouts com o seu limite, o documento de estado, o plugin `ecosystem-ci` e os textos em oito idiomas são reais e estão testados (95 testes automáticos, com repositórios git locais e processos locais). O nó não correu num anfitrião de desenvolvimento real, uma receita não está isolada além de uma lista de permitidos e de um ambiente mínimo, e nada tira trabalho da fila sozinho. Veja o `CHANGELOG.md` para saber exatamente o que foi entregue.
 
 ---
 
@@ -40,7 +40,7 @@ GPL-3.0-or-later - see LICENSE
 |---|---|
 | Versão | `0.0.3` |
 | Maturidade | Estrutura inicial |
-| Testes | 94 (`python -m pytest -q tests`) |
+| Testes | 95 (`python -m pytest -q tests`) |
 | Tecnologia | Python 3.11+ / JSON Schema / SQLite / git worktree |
 | Destino | Um servidor de desenvolvimento |
 | Em hardware real | Não aplicável: nada aqui corre em hardware |
@@ -56,7 +56,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | Só estrutura e as primeiras peças; falta a maior parte do trabalho |
-| Testes | 🟡 | 94 testes automáticos, executados a cada alteração |
+| Testes | 🟡 | 95 testes automáticos, executados a cada alteração |
 | Hardware real | 🟡 | Não aplicável: nada aqui corre em hardware |
 | Interface e protocolos | 🟡 | As rotas ou mensagens que oferece estão documentadas e testadas com um cliente; ainda nem todos os clientes as usaram |
 | Integração | 🟡 | As suas mensagens e rotas são verificadas contra os contratos partilhados do SDK; ainda não funcionou em conjunto com o equipamento real |
@@ -100,7 +100,7 @@ Requer Python 3.11 ou superior.
 
 ## 🧪 Testes
 
-94 testes automáticos correm com `python -m pytest -q tests`. Não precisam de hardware nem de nada fora desta máquina.
+95 testes automáticos correm com `python -m pytest -q tests`. Não precisam de hardware nem de nada fora desta máquina.
 
 A CI executa `HYDRA_UMC_CI=1 python tools/ci_validate.py`, que verifica o manifesto, os documentos, os oito README e as imagens.
 
