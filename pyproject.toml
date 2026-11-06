@@ -19,7 +19,7 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
 # Pinned to a tag on purpose: the node never depends on whatever the SDK branch holds at that moment; raise the pin deliberately.
-sdk = ["hydra-umc-sdk @ git+https://github.com/JuanenRac/HYDRA-UMC-SDK.git@v0.5.1#subdirectory=clients/python"]
+sdk = ["hydra-umc-sdk @ git+https://github.com/JuanenRac/HYDRA-UMC-SDK.git@v0.5.3#subdirectory=clients/python"]
 
 [project.urls]
 Homepage = "https://github.com/JuanenRac/HYDRA-UMC-DEVELOPER-NODE"
