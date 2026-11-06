@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The contract of the evidence bundle is the one of the shared SDK:** `contracts/evidence_bundle.schema.json` is now the closed schema of the SDK (no field outside the contract), and a test compares it with the SDK checkout when one is at hand (`HYDRA_UMC_SDK_DIR` or a sibling folder), so the copy cannot drift.
+
 ## [0.0.3] - panel push sends the status document to HYDRA-UMC-SERVER with the token of this node (serverPush, off by default): POST /api/ingest/developer-node/status with Authorization: Bearer <token> and X-Node-Id. HTTPS only (plain http... (and 1 more changes)
 
 - **`panel push` sends the status document to HYDRA-UMC-SERVER with the token of this node (`serverPush`, off by default):** `POST /api/ingest/developer-node/status` with `Authorization: Bearer <token>` and `X-Node-Id`. HTTPS only (plain http for this machine alone), no redirect is followed, a token that is missing or too short sends nothing, and the token is never printed or put in an error. The token comes from an environment variable or a file, never from the configuration file. 8 tests.

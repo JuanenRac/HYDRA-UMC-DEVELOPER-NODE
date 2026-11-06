@@ -146,3 +146,25 @@ def test_same_checksum_as_the_local_technician_when_it_is_next_to_this_repositor
     bundle = make_bundle()
     assert theirs.verify_bundle(bundle) == evidence.verify_bundle(bundle)
     assert json.dumps(bundle)  # the same document is accepted by both
+
+
+def _sdk_checkout() -> Path | None:
+    import os
+
+    candidates = []
+    if os.environ.get("HYDRA_UMC_SDK_DIR"):
+        candidates.append(Path(os.environ["HYDRA_UMC_SDK_DIR"]))
+    candidates.append(Path(__file__).resolve().parents[2] / "HYDRA-UMC-SDK")
+    for candidate in candidates:
+        if (candidate / "contracts" / "json-schema" / "v1" / "evidence-bundle.schema.json").is_file():
+            return candidate
+    return None
+
+
+def test_the_contract_of_the_bundle_is_the_one_of_the_sdk_when_it_is_at_hand() -> None:
+    sdk = _sdk_checkout()
+    if sdk is None:
+        pytest.skip("the SDK is not checked out next to this repository")
+    theirs = json.loads((sdk / "contracts" / "json-schema" / "v1" / "evidence-bundle.schema.json").read_text(encoding="utf-8"))
+    ours = json.loads((Path(__file__).resolve().parents[1] / "contracts" / "evidence_bundle.schema.json").read_text(encoding="utf-8"))
+    assert ours == theirs
