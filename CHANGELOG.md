@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **README: the platform statement:** a note says that where the README speaks of the CM5 it means the pilot bench that runs today, and that the target platform of HYDRA-UMC, an NVIDIA Jetson Orin NX 16 GB, is a design that has not been built or tested.
 - **The contract of the evidence bundle is the one of the shared SDK:** `contracts/evidence_bundle.schema.json` is now the closed schema of the SDK (no field outside the contract), and a test compares it with the SDK checkout when one is at hand (`HYDRA_UMC_SDK_DIR` or a sibling folder), so the copy cannot drift.
 
 ## [0.0.3] - panel push sends the status document to HYDRA-UMC-SERVER with the token of this node (serverPush, off by default): POST /api/ingest/developer-node/status with Authorization: Bearer <token> and X-Node-Id. HTTPS only (plain http... (and 1 more changes)

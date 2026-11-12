@@ -82,6 +82,8 @@ HYDRA-UMC-DEVELOPER-NODE 是生态系统的开发节点：研究某个节点所�
 
 **HYDRA-UMC-DEVELOPER-NODE** 是生态系统的开发节点：它读取 `HYDRA-UMC-LOCAL-TECHNICIAN` 的证据包，维护按修订版本的检出缓存，运行复现配方和共享 CI；这些部分在配置将其打开、且有人批准确切的运行之前都保持关闭。
 
+> **平台：** 本 README 中的 CM5 指的是目前正在运行的试验台；HYDRA-UMC 的目标平台是 NVIDIA Jetson Orin NX 16 GB，这是尚未制造或测试的设计。
+
 ## 🏛️ 架构
 
 <p align="center">

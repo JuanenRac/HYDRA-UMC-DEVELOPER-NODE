@@ -82,6 +82,8 @@ HYDRA-UMC-DEVELOPER-NODE はエコシステムの開発ノードで、ノード�
 
 **HYDRA-UMC-DEVELOPER-NODE** はエコシステムの開発ノードです。`HYDRA-UMC-LOCAL-TECHNICIAN` の証拠バンドルを読み、リビジョン別のチェックアウトのキャッシュを持ち、再現レシピと共有 CI を実行します。これらはいずれも、設定が開き、担当者がその実行を正確に承認するまで閉じたままです。
 
+> **プラットフォーム：** この README の「CM5」は、現在動作している試験用ベンチを指します。HYDRA-UMC の目標プラットフォームは NVIDIA Jetson Orin NX 16 GB ですが、これは製作も試験もされていない設計です。
+
 ## 🏛️ アーキテクチャ
 
 <p align="center">

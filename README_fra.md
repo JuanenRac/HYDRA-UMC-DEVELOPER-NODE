@@ -82,6 +82,8 @@ Cette version fournit cinq éléments indépendants :
 
 **HYDRA-UMC-DEVELOPER-NODE** est le nœud de développement de l'écosystème : il lit les paquets de preuves de `HYDRA-UMC-LOCAL-TECHNICIAN`, tient un cache de checkouts par révision, exécute des recettes de reproduction et la CI partagée, et chacune de ces parties reste fermée tant que la configuration ne l'ouvre pas et qu'une personne n'approuve pas l'exécution exacte.
 
+> **Plateforme :** là où ce README dit CM5, il s'agit du banc pilote qui fonctionne aujourd'hui ; la plateforme visée par HYDRA-UMC est un NVIDIA Jetson Orin NX 16 Go, une conception ni construite ni testée.
+
 ## 🏛️ Architecture
 
 <p align="center">
