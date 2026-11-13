@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Simulated message streams with injected faults, tests for the approval gate, the schema checker and every refusal of a signed message, and a coverage floor:** the `Simulation bench` workflow feeds the real ingest streams of signed messages from simulated technician nodes (replays, tampering, a wrong secret, clock skew, a wrong destination) from a fixed seed and checks that only the good, new ones are accepted and that a nonce is accepted once. New tests cover the approval gate (no terminal, wrong or empty confirmation, expiry, single use, binding to subject, action and digest), the small schema checker and each reason a message is refused. The coverage job measures statements and branches and fails under a floor that must not go down.
 - **README: the platform statement:** a note says that where the README speaks of the CM5 it means the pilot bench that runs today, and that the target platform of HYDRA-UMC, an NVIDIA Jetson Orin NX 16 GB, is a design that has not been built or tested.
 - **The contract of the evidence bundle is the one of the shared SDK:** `contracts/evidence_bundle.schema.json` is now the closed schema of the SDK (no field outside the contract), and a test compares it with the SDK checkout when one is at hand (`HYDRA_UMC_SDK_DIR` or a sibling folder), so the copy cannot drift.
 
