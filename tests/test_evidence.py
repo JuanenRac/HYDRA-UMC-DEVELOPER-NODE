@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -35,6 +36,22 @@ def test_a_bundle_with_the_wrong_shape_is_refused() -> None:
         evidence.verify_bundle(make_bundle(reproductionSteps=[]))
     with pytest.raises(evidence.EvidenceError):
         evidence.verify_bundle(make_bundle(surprise=1))
+
+
+def test_the_checksum_and_the_shape_are_those_of_the_sdk() -> None:
+    sdk = pytest.importorskip("hydra_umc_sdk.evidence_bundle")
+    bundle = make_bundle()
+    assert evidence.bundle_checksum(bundle) == sdk.bundle_checksum(bundle)
+    assert sdk.bundle_matches_checksum(bundle)
+
+
+def test_without_the_sdk_a_bundle_is_refused_with_the_reason(monkeypatch: pytest.MonkeyPatch) -> None:
+    pytest.importorskip("hydra_umc_sdk.evidence_bundle")
+    bundle = make_bundle()
+    monkeypatch.setitem(sys.modules, "hydra_umc_sdk", None)
+    monkeypatch.setitem(sys.modules, "hydra_umc_sdk.evidence_bundle", None)
+    with pytest.raises(evidence.EvidenceError, match="sdk"):
+        evidence.verify_bundle(bundle)
 
 
 def test_a_bundle_that_carries_a_secret_is_refused() -> None:

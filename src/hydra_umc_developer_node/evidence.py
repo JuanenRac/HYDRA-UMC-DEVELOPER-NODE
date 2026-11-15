@@ -35,19 +35,29 @@ class EvidenceError(ValueError):
     """The bundle or the message is refused; the text says why and nothing was stored."""
 
 
+def _sdk_evidence() -> Any:
+    """The evidence-bundle module of the shared SDK (extra `sdk`); without it a bundle cannot be checked, so it is refused with the reason."""
+    try:
+        from hydra_umc_sdk import evidence_bundle
+    except ImportError as error:
+        raise EvidenceError("the evidence bundle is checked by hydra-umc-sdk: install this package with the `sdk` extra") from error
+    return evidence_bundle
+
+
 def bundle_checksum(content: dict[str, Any]) -> str:
-    """The checksum the technician computes: SHA-256 of the canonical JSON of the bundle without its `checksum` field."""
-    canonical = json.dumps({key: value for key, value in content.items() if key != "checksum"}, sort_keys=True, ensure_ascii=False)
-    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    """The checksum the technician computes (the one of the SDK): SHA-256 of the canonical JSON of the bundle without its `checksum` field."""
+    return str(_sdk_evidence().bundle_checksum(content))
 
 
 def verify_bundle(bundle: Any) -> list[str]:
     """Checks an EvidenceBundle (read only) and returns its reproduction steps. Raises `EvidenceError` when it is not trustworthy."""
+    module = _sdk_evidence()
     try:
         validate("evidence_bundle", bundle)
-    except SchemaError as error:
+        module.validate_evidence_bundle(bundle)
+    except (SchemaError, ValueError) as error:
         raise EvidenceError(f"the bundle is not a valid EvidenceBundle: {error}") from error
-    if bundle_checksum(bundle) != bundle["checksum"]:
+    if not module.bundle_matches_checksum(bundle):
         raise EvidenceError("the checksum of the bundle is not that of its content: it was changed after it was assembled")
     if contains_secret(json.dumps(bundle, ensure_ascii=False)):
         raise EvidenceError("the bundle carries something that looks like a secret; it is refused instead of stored")
