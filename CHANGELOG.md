@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The edges of the incoming evidence are hardened:** a signature that is not 64 lowercase hexadecimal digits (a non-ASCII text included) is refused as a wrong signature instead of raising, a `sent_at` that is not a finite number is refused as out of the age window, `NaN` and `Infinity` in a message file are rejected as invalid JSON, and a configuration whose `ingest.nonceRetentionSeconds` is shorter than twice `ingest.maxClockSkewSeconds` is refused with the value to raise it to, so that a message cannot be replayed after its nonce is forgotten.
 
 ## [0.0.4]
 
