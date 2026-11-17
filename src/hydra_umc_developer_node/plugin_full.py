@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Any
 
 from . import approvals
+from .procs import kill_tree
 from .plugin_ci import PluginError
 from .redaction import redact
 from .schema import validate
@@ -167,25 +168,7 @@ def environment(extra: tuple[str, ...], offline: bool) -> dict[str, str]:
     return kept
 
 
-def _kill_tree(process: subprocess.Popen[bytes]) -> None:
-    """Ends the child this module started and the processes it started; nothing else."""
-    try:
-        if sys.platform == "win32":
-            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"], capture_output=True, check=False, timeout=30)
-        else:
-            import signal
-
-            os.killpg(process.pid, signal.SIGKILL)
-    except (OSError, ProcessLookupError, subprocess.SubprocessError):
-        pass
-    try:
-        process.kill()
-    except OSError:
-        pass
-    try:
-        process.wait(timeout=10)
-    except subprocess.SubprocessError:
-        pass
+_kill_tree = kill_tree  # the one implementation lives in procs.py
 
 
 def _argv(command: dict[str, Any]) -> list[str]:

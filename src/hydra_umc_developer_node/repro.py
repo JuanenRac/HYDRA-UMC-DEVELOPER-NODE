@@ -16,13 +16,13 @@ from __future__ import annotations
 import json
 import os
 import secrets
-import subprocess
 import time
 from datetime import datetime, timezone
 from pathlib import Path, PurePath, PurePosixPath, PureWindowsPath
 from typing import Any
 
 from . import approvals
+from .procs import run_bounded
 from .redaction import redact
 from .schema import SchemaError, validate
 from .settings import ReproSettings
@@ -92,15 +92,13 @@ def _inside(root: Path, candidate: Path) -> bool:
 def _run_step(argv: list[str], cwd: Path, settings: ReproSettings) -> tuple[str, int | None, str]:
     """('ok'|'timeout'|'error', exit code, redacted output tail)."""
     try:
-        result = subprocess.run(argv, cwd=str(cwd), shell=False, env=_environment(), stdin=subprocess.DEVNULL, capture_output=True,
-                                timeout=settings.step_timeout_seconds, check=False)
-    except subprocess.TimeoutExpired as error:
-        partial = (error.stdout or b"") if isinstance(error.stdout, bytes) else b""
-        return "timeout", None, redact(partial[-settings.max_output_bytes:].decode("utf-8", "replace"))
+        result = run_bounded(argv, cwd, _environment(), settings.step_timeout_seconds, settings.max_output_bytes)
     except OSError as error:
         return "error", None, f"could not start: {error.__class__.__name__}"
-    output = (result.stdout + result.stderr)[-settings.max_output_bytes:].decode("utf-8", "replace")
-    return "ok", result.returncode, redact(output)
+    output = redact(result.output[-settings.max_output_bytes:].decode("utf-8", "replace"))
+    if result.status == "timeout":
+        return "timeout", None, output
+    return "ok", result.returncode, output
 
 
 def run_recipe(recipe: dict[str, Any], store: Store, settings: ReproSettings, case_id: str, phase: str, workdir: Path,

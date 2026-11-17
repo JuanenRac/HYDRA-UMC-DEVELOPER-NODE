@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The steps of a reproduction and the shared CI validator run with the same limits as the complete mode, and the plan of the CI names the script it approves:** one runner (`procs.run_bounded`) puts the command in its own process group, stops it when its output passes the limit or its time is up and ends the processes it started, so a step that leaves a child behind no longer leaves it running; the plan of the shared CI validator now carries the SHA-256 of each `tools/ci_validate.py`, so a script changed after the approval is not run (this changes the digest of the plan: a plan approved before needs a new approval).
 - **The edges of the incoming evidence are hardened:** a signature that is not 64 lowercase hexadecimal digits (a non-ASCII text included) is refused as a wrong signature instead of raising, a `sent_at` that is not a finite number is refused as out of the age window, `NaN` and `Infinity` in a message file are rejected as invalid JSON, and a configuration whose `ingest.nonceRetentionSeconds` is shorter than twice `ingest.maxClockSkewSeconds` is refused with the value to raise it to, so that a message cannot be replayed after its nonce is forgotten.
 
 ## [0.0.4]
