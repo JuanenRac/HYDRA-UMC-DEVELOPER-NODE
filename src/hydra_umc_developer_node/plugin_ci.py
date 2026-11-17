@@ -12,15 +12,16 @@ report stays on this machine; nothing is sent anywhere.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
-import subprocess
 import sys
 import time
 from pathlib import Path
 from typing import Any
 
 from . import approvals
+from .procs import run_bounded
 from .redaction import redact
 from .schema import validate
 from .settings import EcosystemCiSettings
@@ -29,6 +30,7 @@ from .store import Store
 NAME = "ecosystem-ci"
 ACTION = "ci-run"
 SUBJECT = "plan:ecosystem-ci"
+MAX_OUTPUT_BYTES = 4_000_000
 _SECRET_WORDS = ("SECRET", "TOKEN", "PASSWORD", "PASSWD", "API_KEY", "APIKEY", "PRIVATE")
 
 
@@ -42,6 +44,14 @@ def _environment() -> dict[str, str]:
     return kept
 
 
+def _script_sha256(path: Path) -> str:
+    """The SHA-256 of the validator a repository would run (empty when there is none), so that a script changed after the approval is not run."""
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        return ""
+
+
 def build_plan(settings: EcosystemCiSettings) -> dict[str, Any]:
     if not settings.workspace:
         raise PluginError("ecosystemCi.workspace is not set in the configuration file")
@@ -53,12 +63,14 @@ def build_plan(settings: EcosystemCiSettings) -> dict[str, Any]:
         if name in (".", "..") or "/" in name or "\\" in name:
             raise PluginError(f"{name!r} is not a plain repository folder name")
         repos.append(name)
+    scripts = {name: _script_sha256(workspace / name / "tools" / "ci_validate.py") for name in repos}
     return {
         "contract": "ecosystem-ci-plan/1",
         "workspace": str(workspace),
         "repos": repos,
         "command": ["python", "-I", "tools/ci_validate.py"],
         "env": {"HYDRA_UMC_CI": "1"},
+        "scripts": scripts,
         "timeout_seconds": settings.timeout_seconds,
     }
 
@@ -67,23 +79,26 @@ def plan_digest(plan: dict[str, Any]) -> str:
     return approvals.digest_of(plan)
 
 
-def _run_repo(workspace: Path, name: str, settings: EcosystemCiSettings) -> dict[str, Any]:
+def _run_repo(workspace: Path, name: str, settings: EcosystemCiSettings, approved_sha256: str = "") -> dict[str, Any]:
     folder = workspace / name
     script = folder / "tools" / "ci_validate.py"
     if not script.is_file():
         return {"repo": name, "status": "skipped", "exit_code": None, "seconds": 0.0, "tail": ["tools/ci_validate.py not found"]}
-    started = time.monotonic()
+    if approved_sha256 and _script_sha256(script) != approved_sha256:
+        return {"repo": name, "status": "error", "exit_code": None, "seconds": 0.0,
+                "tail": ["tools/ci_validate.py changed after the plan was approved: it was not run"]}
     try:
-        result = subprocess.run([sys.executable, "-I", "tools/ci_validate.py"], cwd=str(folder), env=_environment(), stdin=subprocess.DEVNULL,
-                                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=settings.timeout_seconds,
-                                check=False)
-    except subprocess.TimeoutExpired:
-        return {"repo": name, "status": "error", "exit_code": None, "seconds": round(time.monotonic() - started, 2), "tail": ["timeout"]}
+        result = run_bounded([sys.executable, "-I", "tools/ci_validate.py"], folder, _environment(), settings.timeout_seconds, MAX_OUTPUT_BYTES)
     except OSError as error:
         return {"repo": name, "status": "error", "exit_code": None, "seconds": 0.0, "tail": [f"could not start: {error.__class__.__name__}"]}
-    lines = [redact(line) for line in (result.stdout + result.stderr).splitlines() if line.strip()]
+    lines = [redact(line) for line in result.output.decode("utf-8", "replace").splitlines() if line.strip()]
+    if result.status == "timeout":
+        return {"repo": name, "status": "error", "exit_code": None, "seconds": result.seconds, "tail": ["timeout"]}
+    if result.status == "over":
+        return {"repo": name, "status": "error", "exit_code": None, "seconds": result.seconds,
+                "tail": ["output limit reached: the command was stopped", *lines[-settings.tail_lines:]]}
     return {"repo": name, "status": "pass" if result.returncode == 0 else "fail", "exit_code": result.returncode,
-            "seconds": round(time.monotonic() - started, 2), "tail": lines[-settings.tail_lines:]}
+            "seconds": result.seconds, "tail": lines[-settings.tail_lines:]}
 
 
 def run(plan: dict[str, Any], store: Store, settings: EcosystemCiSettings, data_dir: Path, now: float | None = None) -> dict[str, Any]:
@@ -99,7 +114,7 @@ def run(plan: dict[str, Any], store: Store, settings: EcosystemCiSettings, data_
         raise PluginError(str(error)) from error
     workspace = Path(plan["workspace"])
     started = time.time() if now is None else now
-    results = [_run_repo(workspace, name, settings) for name in plan["repos"]]
+    results = [_run_repo(workspace, name, settings, plan.get("scripts", {}).get(name, "")) for name in plan["repos"]]
     summary = {key: sum(1 for item in results if item["status"] == key) for key in ("pass", "fail", "error", "skipped")}
     report = {"contract": "ecosystem-ci-report/1", "plan_digest": digest, "started_at": started, "finished_at": time.time(),
               "results": results, "summary": summary}
