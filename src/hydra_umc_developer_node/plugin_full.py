@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Any
 
 from . import approvals
-from .procs import kill_tree
+from .procs import kill_tree, minimal_environment
 from .plugin_ci import PluginError
 from .redaction import redact
 from .schema import validate
@@ -42,9 +42,6 @@ SUBJECT = "plan:ecosystem-ci-full"
 INTERPRETERS = ("python", "sh")
 STATUSES = ("pass", "fail", "timeout", "skipped")
 MAX_LINE = 300
-_SECRET_WORDS = ("SECRET", "TOKEN", "PASSWORD", "PASSWD", "API_KEY", "APIKEY", "PRIVATE", "CREDENTIAL")
-_BASE_ENV = ("PATH", "PATHEXT", "SYSTEMROOT", "SYSTEMDRIVE", "WINDIR", "COMSPEC", "TEMP", "TMP", "TMPDIR", "HOME", "HOMEDRIVE", "HOMEPATH",
-             "USERPROFILE", "APPDATA", "LOCALAPPDATA", "LANG", "LC_ALL", "TZ", "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS")
 _OFFLINE_ENV = {
     "HTTP_PROXY": "http://127.0.0.1:9", "HTTPS_PROXY": "http://127.0.0.1:9", "ALL_PROXY": "http://127.0.0.1:9", "NO_PROXY": "",
     "PIP_NO_INDEX": "1", "npm_config_offline": "true", "CARGO_NET_OFFLINE": "true", "GRADLE_OPTS": "--offline",
@@ -159,8 +156,7 @@ def describe(plan: dict[str, Any]) -> list[str]:
 
 def environment(extra: tuple[str, ...], offline: bool) -> dict[str, str]:
     """A minimal environment: a short list of names, plus the configured ones, never a name that looks like a secret."""
-    wanted = {name.upper() for name in (*_BASE_ENV, *extra)}
-    kept = {key: value for key, value in os.environ.items() if key.upper() in wanted and not any(word in key.upper() for word in _SECRET_WORDS)}
+    kept = minimal_environment(extra)
     kept["HYDRA_UMC_CI"] = "1"
     kept["PYTHONIOENCODING"] = "utf-8"
     if offline:
