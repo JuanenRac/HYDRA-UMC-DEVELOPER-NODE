@@ -31,6 +31,17 @@ class Bounded:
     seconds: float
 
 
+BASE_ENV = ("PATH", "PATHEXT", "SYSTEMROOT", "SYSTEMDRIVE", "WINDIR", "COMSPEC", "TEMP", "TMP", "TMPDIR", "HOME", "HOMEDRIVE", "HOMEPATH",
+            "USERPROFILE", "APPDATA", "LOCALAPPDATA", "LANG", "LC_ALL", "TZ", "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS")
+SECRET_WORDS = ("SECRET", "TOKEN", "PASSWORD", "PASSWD", "API_KEY", "APIKEY", "PRIVATE", "CREDENTIAL")
+
+
+def minimal_environment(extra: tuple[str, ...] = ()) -> dict[str, str]:
+    """The environment of a command that runs code of a repository: a short list of names (`BASE_ENV` and `extra`), never a name that looks like a secret."""
+    wanted = {name.upper() for name in (*BASE_ENV, *extra)}
+    return {key: value for key, value in os.environ.items() if key.upper() in wanted and not any(word in key.upper() for word in SECRET_WORDS)}
+
+
 def kill_tree(process: subprocess.Popen[bytes]) -> None:
     """Ends the child this module started and the processes it started; nothing else."""
     try:

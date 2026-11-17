@@ -59,3 +59,17 @@ def test_the_plan_carries_the_digest_of_each_validator_and_a_changed_script_is_n
     refused = plugin_ci._run_repo(tmp_path, "REPO", settings, plan["scripts"]["REPO"])
     assert refused["status"] == "error" and "changed after the plan was approved" in refused["tail"][0]
     assert plugin_ci.build_plan(settings)["scripts"]["REPO"] != plan["scripts"]["REPO"]
+
+
+def test_the_environment_of_a_repository_command_is_a_short_list(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("UNRELATED_NAME", "visible-unrelated")
+    monkeypatch.setenv("MY_API_TOKEN", "sekret-value")
+    monkeypatch.setenv("KEEP_ME", "kept-value")
+    monkeypatch.setenv("TZ", "UTC")
+    kept = procs.minimal_environment()
+    assert "UNRELATED_NAME" not in kept and "MY_API_TOKEN" not in kept and "KEEP_ME" not in kept
+    assert kept.get("TZ") == "UTC"
+    extra = procs.minimal_environment(("keep_me", "MY_API_TOKEN"))
+    assert extra.get("KEEP_ME") == "kept-value" and "MY_API_TOKEN" not in extra  # a name that looks like a secret is never passed, even when asked for
+    assert plugin_ci._environment()["HYDRA_UMC_CI"] == "1"
+    assert "UNRELATED_NAME" not in plugin_ci._environment()

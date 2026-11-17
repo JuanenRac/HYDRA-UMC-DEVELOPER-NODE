@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Any
 
 from . import approvals
-from .procs import run_bounded
+from .procs import minimal_environment, run_bounded
 from .redaction import redact
 from .schema import validate
 from .settings import EcosystemCiSettings
@@ -31,7 +31,6 @@ NAME = "ecosystem-ci"
 ACTION = "ci-run"
 SUBJECT = "plan:ecosystem-ci"
 MAX_OUTPUT_BYTES = 4_000_000
-_SECRET_WORDS = ("SECRET", "TOKEN", "PASSWORD", "PASSWD", "API_KEY", "APIKEY", "PRIVATE")
 
 
 class PluginError(ValueError):
@@ -39,7 +38,7 @@ class PluginError(ValueError):
 
 
 def _environment() -> dict[str, str]:
-    kept = {key: value for key, value in os.environ.items() if not any(word in key.upper() for word in _SECRET_WORDS)}
+    kept = minimal_environment()
     kept["HYDRA_UMC_CI"] = "1"
     return kept
 
