@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import math
 import re
 import time
 from collections.abc import Mapping
@@ -64,6 +65,14 @@ def verify_bundle(bundle: Any) -> list[str]:
     return list(bundle["reproductionSteps"])
 
 
+_MAC = re.compile(r"[0-9a-f]{64}")
+
+
+def _refuse_constant(name: str) -> Any:
+    """NaN and Infinity are not JSON: they would pass a comparison of ages as if they were in range."""
+    raise ValueError(f"{name} is not a JSON number")
+
+
 def read_secret(settings: IngestSettings, environ: Mapping[str, str]) -> str:
     """The shared secret of the transport: the file when one is configured, else the environment variable. Never from the command line."""
     if settings.secret_file:
@@ -92,14 +101,16 @@ def verify_message(message: Any, settings: IngestSettings, secret: str, store: S
     if not isinstance(message, dict):
         raise EvidenceError("the message is not a JSON object")
     mac = message.get("mac")
-    if not isinstance(mac, str) or not hmac.compare_digest(mac, sign_message(message, secret)):
+    # a signature is 64 lowercase hexadecimal digits: anything else (a non-ASCII text included) is refused before it is compared
+    if not isinstance(mac, str) or not _MAC.fullmatch(mac) or not hmac.compare_digest(mac, sign_message(message, secret)):
         raise EvidenceError("the signature of the message is wrong")
     if message.get("contract_version") != CONTRACT_VERSION or message.get("kind") != "incident":
         raise EvidenceError("the message is not an incident of incident-transport/1")
     if message.get("to_node") != settings.expected_to_node:
         raise EvidenceError("the message is addressed to another node")
     sent_at = message.get("sent_at")
-    if isinstance(sent_at, bool) or not isinstance(sent_at, (int, float)) or abs(moment - sent_at) > settings.max_clock_skew_seconds:
+    if (isinstance(sent_at, bool) or not isinstance(sent_at, (int, float)) or not math.isfinite(sent_at)
+            or abs(moment - sent_at) > settings.max_clock_skew_seconds):
         raise EvidenceError("the message is too old or too new")
     nonce = message.get("nonce")
     if not isinstance(nonce, str) or not nonce:
@@ -129,7 +140,7 @@ def ingest(path: Path, settings: IngestSettings, store: Store, environ: Mapping[
     if size > settings.max_bundle_bytes:
         raise EvidenceError("the file is bigger than ingest.maxBundleBytes")
     try:
-        document = json.loads(path.read_text(encoding="utf-8"))
+        document = json.loads(path.read_text(encoding="utf-8"), parse_constant=_refuse_constant)
     except OSError as error:
         raise EvidenceError(f"cannot read the file: {error.strerror or 'error'}") from error
     except ValueError as error:

@@ -259,6 +259,10 @@ def parse_settings(raw: Any) -> Settings:
     classes = {"ingest": IngestSettings, "repro": ReproSettings, "checkouts": CheckoutSettings, "panel": PanelSettings,
                "serverPush": ServerPushSettings, "ecosystemCi": EcosystemCiSettings, "ecosystemCiFull": EcosystemCiFullSettings}
     sections = {name: _section(name, raw[name], cls) for name, cls in classes.items() if name in raw}
+    ingest = sections.get("ingest", IngestSettings())
+    if ingest.nonce_retention_seconds < 2 * ingest.max_clock_skew_seconds:
+        # a message can be accepted for as long as the clock skew allows on either side of its time; a nonce forgotten sooner could be replayed
+        raise SettingsError(f"ingest.nonceRetentionSeconds must be at least twice ingest.maxClockSkewSeconds ({2 * ingest.max_clock_skew_seconds}) so that a message cannot be replayed")
     return Settings(
         data_dir=data_dir,
         language=language,

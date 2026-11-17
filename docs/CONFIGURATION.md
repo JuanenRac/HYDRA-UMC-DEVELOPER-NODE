@@ -17,7 +17,7 @@ GPL-3.0-or-later - see LICENSE
 | | `requireTransportMac` | `true` | A bare bundle (without a signed message) is refused. |
 | | `secretEnv` / `secretFile` | `HYDRA_UMC_DEVELOPER_NODE_TRANSPORT_SECRET` / empty | Where the shared secret is read from (at least 24 characters); never from the command line. |
 | | `expectedToNode` | `developer-node` | The receiver name a message must carry. |
-| | `maxClockSkewSeconds` / `nonceRetentionSeconds` | 300 / 86400 | The age window and how long a nonce is remembered. |
+| | `maxClockSkewSeconds` / `nonceRetentionSeconds` | 300 / 86400 | The age window and how long a nonce is remembered; the retention must be at least twice the window, or the configuration is refused. |
 | `repro` | `enabled` | `false` | Allows `repro run`. |
 | | `allowedCommands` | `[]` | Names of the programs a recipe may start; empty allows nothing. |
 | | `approvalMaxAgeMinutes` | 30 | An approval expires and is single use. |

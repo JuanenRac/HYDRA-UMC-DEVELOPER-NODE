@@ -88,3 +88,10 @@ def test_translation_lookup_and_fallback() -> None:
     assert i18n.t("msg.no_cases", "xx") == "There are no cases."
     assert i18n.t("unknown.key") == "unknown.key"
     assert set(i18n.labels("ja")) == {key[6:] for key in i18n.MESSAGES if key.startswith("label.")}
+
+
+def test_a_nonce_is_kept_at_least_as_long_as_the_clock_skew_allows_a_replay() -> None:
+    from hydra_umc_developer_node.settings import SettingsError, parse_settings
+    assert parse_settings({"ingest": {"maxClockSkewSeconds": 300, "nonceRetentionSeconds": 600}}).ingest.nonce_retention_seconds == 600
+    with pytest.raises(SettingsError, match="nonceRetentionSeconds"):
+        parse_settings({"ingest": {"maxClockSkewSeconds": 300, "nonceRetentionSeconds": 599}})

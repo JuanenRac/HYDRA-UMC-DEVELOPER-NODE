@@ -185,3 +185,30 @@ def test_the_contract_of_the_bundle_is_the_one_of_the_sdk_when_it_is_at_hand() -
     theirs = json.loads((sdk / "contracts" / "json-schema" / "v1" / "evidence-bundle.schema.json").read_text(encoding="utf-8"))
     ours = json.loads((Path(__file__).resolve().parents[1] / "contracts" / "evidence_bundle.schema.json").read_text(encoding="utf-8"))
     assert ours == theirs
+
+
+def test_a_signature_that_is_not_64_hex_digits_is_refused_without_a_traceback(tmp_path: Path) -> None:
+    with Store(tmp_path / "s.db") as store:
+        for mac in ("é" * 64, "A" * 64, "0" * 63, "", "zz" * 32):
+            message = make_message(make_bundle(), NOW, nonce="n-mac")
+            message["mac"] = mac
+            with pytest.raises(evidence.EvidenceError, match="signature"):
+                evidence.verify_message(message, open_settings(), SECRET, store, NOW)
+        assert store.remember_nonce("n-mac", 100, NOW)
+
+
+def test_a_time_that_is_not_a_finite_number_is_refused(tmp_path: Path) -> None:
+    with Store(tmp_path / "s.db") as store:
+        for sent_at in (float("nan"), float("inf"), float("-inf")):
+            message = make_message(make_bundle(), NOW, nonce="n-nan")
+            message["sent_at"] = sent_at
+            message["mac"] = evidence.sign_message(message, SECRET)
+            with pytest.raises(evidence.EvidenceError, match="too old or too new"):
+                evidence.verify_message(message, open_settings(), SECRET, store, NOW)
+
+
+def test_nan_and_infinity_in_a_file_are_not_json(tmp_path: Path) -> None:
+    path = tmp_path / "m.json"
+    path.write_text('{"mac": "0", "sent_at": NaN}', encoding="utf-8")
+    with Store(tmp_path / "s.db") as store, pytest.raises(evidence.EvidenceError, match="not valid JSON"):
+        evidence.ingest(path, open_settings(), store, ENV, NOW)
