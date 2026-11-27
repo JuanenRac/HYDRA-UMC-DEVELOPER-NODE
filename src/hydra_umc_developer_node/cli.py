@@ -65,6 +65,12 @@ def build_parser() -> argparse.ArgumentParser:
     rp_approve = rp.add_parser("approve", help="a person approves the exact digest of a recipe for a case (needs a terminal)")
     rp_approve.add_argument("case_id")
     rp_approve.add_argument("recipe")
+    rp_approve.add_argument("--phase", choices=("before", "after"), help="the phase being approved (needed unless repro.bindApprovalToRevision is false)")
+    approve_where = rp_approve.add_mutually_exclusive_group()
+    approve_where.add_argument("--checkout", nargs=3, metavar=("NAME", "REMOTE", "REV"), help="approve for the cached checkout of this revision")
+    approve_where.add_argument("--workdir", help="approve for this folder (needs --fingerprint)")
+    rp_approve.add_argument("--fingerprint", help="the commit of the source state when --workdir is used")
+    rp_approve.add_argument("--allow-unverified-workdir", action="store_true", help="accept a --workdir whose commit cannot be read")
     rp_run = rp.add_parser("run", help="run an approved recipe (the approval is used up)")
     rp_run.add_argument("case_id")
     rp_run.add_argument("recipe")
@@ -72,7 +78,8 @@ def build_parser() -> argparse.ArgumentParser:
     where = rp_run.add_mutually_exclusive_group(required=True)
     where.add_argument("--checkout", nargs=3, metavar=("NAME", "REMOTE", "REV"), help="run in the cached checkout of this revision")
     where.add_argument("--workdir", help="run in this folder (needs --fingerprint)")
-    rp_run.add_argument("--fingerprint", help="the identifier of the source state when --workdir is used")
+    rp_run.add_argument("--fingerprint", help="the commit of the source state when --workdir is used")
+    rp_run.add_argument("--allow-unverified-workdir", action="store_true", help="accept a --workdir whose commit cannot be read")
     rp_compare = rp.add_parser("compare", help="the verdict of the stored before and after runs (computed by the SDK)")
     rp_compare.add_argument("case_id")
     rp_compare.add_argument("scenario_id")
@@ -150,19 +157,41 @@ def _repro(settings: Settings, args: argparse.Namespace) -> int:
     if args.command == "check":
         print(digest)
         return 0
+    bound = settings.repro.bind_approval_to_revision
+
+    def source_state() -> tuple[Path, str]:
+        if args.checkout:
+            name, remote, rev = args.checkout
+            return CheckoutCache(settings.checkouts, settings.data_path()).checkout(name, remote, rev)
+        if not args.workdir:
+            raise repro.ReproError("say what source state is meant: --checkout NAME REMOTE REV, or --workdir with --fingerprint")
+        if not args.fingerprint:
+            raise repro.ReproError("--workdir needs --fingerprint")
+        folder = Path(args.workdir)
+        if bound and not repro.verify_workdir(folder, args.fingerprint, args.allow_unverified_workdir):
+            print(t("msg.workdir_unverified", args.lang), file=sys.stderr)
+        return folder, args.fingerprint
+
     with _store(settings) as store:
         if args.command == "approve":
             store.get_case(args.case_id)
+            details = ""
+            if bound:
+                if not args.phase:
+                    raise repro.ReproError("the approval needs --phase before or after")
+                _, fingerprint = source_state()
+                digest = repro.approval_digest(recipe, settings.repro, args.phase, fingerprint)
+                header = t("msg.repro_approval_header", args.lang, phase=args.phase, fingerprint=fingerprint)
+            else:
+                print(t("msg.approval_not_bound", args.lang), file=sys.stderr)
+                header = ""
+            lines = ([header] if header else []) + repro.describe(recipe)
+            details = redact("\n".join(lines)) + "\n"
+            print(details, end="")
             approvals.approve(store, args.case_id, repro.ACTION, digest)
             print(t("msg.approved", args.lang, what=f"{recipe['scenario_id']} {digest[:12]}"))
             return 0
-        if args.checkout:
-            name, remote, rev = args.checkout
-            workdir, fingerprint = CheckoutCache(settings.checkouts, settings.data_path()).checkout(name, remote, rev)
-        else:
-            if not args.fingerprint:
-                raise repro.ReproError("--workdir needs --fingerprint")
-            workdir, fingerprint = Path(args.workdir), args.fingerprint
+        workdir, fingerprint = source_state()
         document = repro.run_recipe(recipe, store, settings.repro, args.case_id, args.phase, workdir, fingerprint)
     print(t("msg.run_outcome", args.lang, phase=args.phase, outcome=document["observed"]["outcome"]))
     _print_json(document)

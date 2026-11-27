@@ -80,9 +80,12 @@ def test_approving_needs_a_terminal(capsys: pytest.CaptureFixture[str], tmp_path
     code, out, _ = run(capsys, "--config", config, "repro", "check", str(recipe))
     assert code == 0 and len(out.strip()) == 64
     code, _, err = run(capsys, "--config", config, "repro", "approve", "esc-1", str(recipe))
-    assert code == 1 and "terminal" in err
+    assert code == 1 and "--phase" in err
+    code, out, err = run(capsys, "--config", config, "repro", "approve", "esc-1", str(recipe), "--phase", "before", "--workdir", str(tmp_path),
+                         "--fingerprint", "abc1234", "--allow-unverified-workdir")
+    assert code == 1 and "terminal" in err and '["python", "-c", "pass"]' in out
     code, _, err = run(capsys, "--config", config, "repro", "run", "esc-1", str(recipe), "--phase", "before", "--workdir", str(tmp_path),
-                       "--fingerprint", "abc")
+                       "--fingerprint", "abc1234", "--allow-unverified-workdir")
     assert code == 1 and "approval" in err
 
 
