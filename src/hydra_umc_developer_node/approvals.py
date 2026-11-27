@@ -41,14 +41,14 @@ def current_person() -> str:
 
 
 def approve(store: Store, subject: str, action: str, digest: str, prompt: Callable[[str], str] | None = None,
-            stream: TextIO | None = None, approver: str | None = None, now: float | None = None) -> None:
+            stream: TextIO | None = None, approver: str | None = None, now: float | None = None, details: str = "") -> None:
     """Records an approval after the person confirmed it. `prompt` is injected by tests; the real one needs a terminal."""
     stream = stream or sys.stdin
     if prompt is None:
         if not stream.isatty():
             raise ApprovalError("an approval needs a person at a terminal: nothing was approved")
         prompt = input
-    typed = prompt(f"{action} {subject} sha256={digest}\nType the first {CONFIRM_LENGTH} characters of the digest to approve: ").strip().lower()
+    typed = prompt(f"{details}{action} {subject} sha256={digest}\nType the first {CONFIRM_LENGTH} characters of the digest to approve: ").strip().lower()
     if typed != digest[:CONFIRM_LENGTH]:
         raise ApprovalError("the confirmation does not match: nothing was approved")
     who = approver or current_person()

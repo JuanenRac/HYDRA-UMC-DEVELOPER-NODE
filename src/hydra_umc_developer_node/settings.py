@@ -43,6 +43,7 @@ class ReproSettings:
     max_steps: int = 20
     max_output_bytes: int = 65_536
     allowed_commands: tuple[str, ...] = ()
+    bind_approval_to_revision: bool = True
 
 
 @dataclass(frozen=True)
@@ -154,6 +155,7 @@ _SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
         "maxSteps": ("max_steps", "int"),
         "maxOutputBytes": ("max_output_bytes", "int"),
         "allowedCommands": ("allowed_commands", "strs"),
+        "bindApprovalToRevision": ("bind_approval_to_revision", "bool"),
     },
     "checkouts": {
         "enabled": ("enabled", "bool"),

@@ -6,7 +6,8 @@
 """An executable repro case: a recipe of fixed commands that shows a failure on one exact revision.
 
 A recipe is a ReproRecipe document. It runs only when the `repro` switch is on, every command is in `repro.allowedCommands`, and a person
-approved the exact digest of the recipe for that case; the approval is used up by the run. Commands are argument lists started without a
+approved the exact digest of the recipe for that case; the approval is used up by the run. With `repro.bindApprovalToRevision` (on by
+default) what is approved is the recipe together with the phase and the fingerprint of the source state, so it cannot be used on other code. Commands are argument lists started without a
 shell, in a folder inside the checkout, with a minimal environment, a time limit and a bound on the output, which is redacted before it
 is kept. Each run yields a ScenarioOutcome (the shared contract of the SDK); the verdict of a before/after pair is computed by the SDK's
 `compare_runs`, not by code of this repository: this module only refuses to guess when the SDK is not installed.
@@ -101,6 +102,40 @@ def _run_step(argv: list[str], cwd: Path, settings: ReproSettings) -> tuple[str,
     return "ok", result.returncode, output
 
 
+def approval_digest(recipe: dict[str, Any], settings: ReproSettings, phase: str, base_fingerprint: str) -> str:
+    """The digest a person approves: the recipe alone, or (bindApprovalToRevision) the recipe, the phase and the source state."""
+    if not settings.bind_approval_to_revision:
+        return approvals.digest_of(recipe)
+    if phase not in ("before", "after"):
+        raise ReproError("the phase must be before or after")
+    if not base_fingerprint:
+        raise ReproError("the approval needs the fingerprint of the exact source state (the commit)")
+    return approvals.digest_of({"recipe_digest": approvals.digest_of(recipe), "phase": phase, "base_fingerprint": base_fingerprint})
+
+
+def describe(recipe: dict[str, Any]) -> list[str]:
+    """Every command of the recipe and the folder it runs in, as the person approving must see them."""
+    return [f"  {number}. {json.dumps(step['argv'], ensure_ascii=False)}  [{step.get('cwd', '.')}]" for number, step in enumerate(recipe["steps"], 1)]
+
+
+def verify_workdir(workdir: Path, fingerprint: str, allow_unverified: bool) -> bool:
+    """True when the HEAD of the git repository in `workdir` is `fingerprint`. A HEAD that differs is refused; a folder whose HEAD cannot be
+    read is refused unless `allow_unverified`, and then the answer is False."""
+    try:
+        result = run_bounded(["git", "-C", str(workdir), "rev-parse", "HEAD"], workdir, _environment(), 30, 4096)
+        head = result.output.decode("ascii", "replace").strip().lower() if result.status != "timeout" and result.returncode == 0 else ""
+    except OSError:
+        head = ""
+    if len(head) < 40 or any(c not in "0123456789abcdef" for c in head):
+        if allow_unverified:
+            return False
+        raise ReproError("the commit of the work folder cannot be read: use a git checkout, or --allow-unverified-workdir")
+    wanted = fingerprint.strip().lower()
+    if len(wanted) < 7 or not head.startswith(wanted):
+        raise ReproError(f"the work folder is at {head[:12]}, not at the fingerprint given")
+    return True
+
+
 def run_recipe(recipe: dict[str, Any], store: Store, settings: ReproSettings, case_id: str, phase: str, workdir: Path,
                base_fingerprint: str, now: float | None = None) -> dict[str, Any]:
     """Runs an approved recipe in `workdir` and returns (and stores) its ScenarioOutcome."""
@@ -115,7 +150,7 @@ def run_recipe(recipe: dict[str, Any], store: Store, settings: ReproSettings, ca
         raise ReproError("the work folder does not exist")
     store.get_case(case_id)
     try:
-        approvals.require(store, case_id, ACTION, approvals.digest_of(recipe), settings.approval_max_age_minutes, now)
+        approvals.require(store, case_id, ACTION, approval_digest(recipe, settings, phase, base_fingerprint), settings.approval_max_age_minutes, now)
     except approvals.ApprovalError as error:
         raise ReproError(str(error)) from error
 

@@ -21,6 +21,7 @@ GPL-3.0-or-later - see LICENSE
 | `repro` | `enabled` | `false` | Allows `repro run`. |
 | | `allowedCommands` | `[]` | Names of the programs a recipe may start; empty allows nothing. |
 | | `approvalMaxAgeMinutes` | 30 | An approval expires and is single use. |
+| | `bindApprovalToRevision` | `true` | What is approved is the recipe, the phase and the commit of the source state, and the commands are shown first. `false` approves the recipe alone, as before. |
 | | `stepTimeoutSeconds` / `maxSteps` / `maxOutputBytes` | 60 / 20 / 65536 | Bounds of a run. |
 | `checkouts` | `enabled` | `false` | Allows the cache of checkouts. |
 | | `allowedRemotes` | `[]` | A remote is fetched only when it is one of these or lies below one. |

@@ -32,8 +32,8 @@ def prepared(tmp_path: Path) -> tuple[Store, Path]:
     return store, work
 
 
-def approve(store: Store, document: dict[str, Any], when: float = NOW) -> None:
-    digest = approvals.digest_of(document)
+def approve(store: Store, document: dict[str, Any], when: float = NOW, phase: str = "before", fingerprint: str = "sha-a") -> None:
+    digest = repro.approval_digest(document, open_settings(), phase, fingerprint)
     approvals.approve(store, "c1", repro.ACTION, digest, prompt=lambda _text: digest[:8], approver="tester", now=when)
 
 
@@ -89,7 +89,7 @@ def test_a_run_that_reproduces_and_one_that_does_not(tmp_path: Path) -> None:
     assert broken["observed"] == {"outcome": "reproduced", "exit_code": 3, "evidence": broken["observed"]["evidence"]}
     assert "probe" in broken["observed"]["evidence"]
     validate("scenario-outcome", broken)
-    approve(store, recipe(0))
+    approve(store, recipe(0), phase="after", fingerprint="sha-b")
     fixed = repro.run_recipe(recipe(0), store, open_settings(), "c1", "after", work, "sha-b", NOW)
     assert fixed["observed"]["outcome"] == "not-reproduced"
     assert store.outcome_count() == 2
@@ -187,10 +187,10 @@ def test_the_verdict_is_computed_by_the_sdk_not_by_this_repository(tmp_path: Pat
     store, work = prepared(tmp_path)
     approve(store, recipe(3))
     repro.run_recipe(recipe(3), store, open_settings(), "c1", "before", work, "sha-a", NOW)
-    approve(store, recipe(0))
+    approve(store, recipe(0), phase="after", fingerprint="sha-b")
     repro.run_recipe(recipe(0), store, open_settings(), "c1", "after", work, "sha-b", NOW)
     assert repro.compare(store, "c1", "demo/probe")["verdict"] == "regression-fixed"
-    approve(store, recipe(0))
+    approve(store, recipe(0), phase="after")
     repro.run_recipe(recipe(0), store, open_settings(), "c1", "after", work, "sha-a", NOW)  # same fingerprint: nothing was applied
     assert repro.compare(store, "c1", "demo/probe")["verdict"] == "apparent-success"
 

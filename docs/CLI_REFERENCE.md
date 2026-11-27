@@ -15,7 +15,7 @@ GPL-3.0-or-later - see LICENSE
 | `evidence ingest FILE` | Check a bundle or a signed `incident-transport/1` message and store it as a case. Needs `ingest.enabled`. |
 | `case list` / `case show ID` | List the cases / print one. |
 | `repro check RECIPE` | Validate a recipe and print its digest. |
-| `repro approve CASE RECIPE` | A person approves the digest for the case (needs a terminal). |
+| `repro approve CASE RECIPE --phase before\|after (--checkout NAME REMOTE REV \| --workdir DIR --fingerprint COMMIT)` | Shows every command and its folder; a person approves the digest of recipe, phase and source state (needs a terminal). With `--workdir` the `HEAD` of the folder must be that commit; `--allow-unverified-workdir` accepts a folder without one. |
 | `repro run CASE RECIPE --phase before\|after (--checkout NAME REMOTE REV \| --workdir DIR --fingerprint TEXT)` | Run an approved recipe; prints the `ScenarioOutcome`. |
 | `repro compare CASE SCENARIO` | The verdict of the stored before and after runs, computed by the SDK (needs the `sdk` extra). |
 | `checkout fetch NAME REMOTE REV` / `list` / `prune` | Make or reuse the worktree of a revision / list the cache / remove the least recently used worktrees until the cache fits its limit. |

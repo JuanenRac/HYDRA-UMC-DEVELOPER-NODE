@@ -25,7 +25,7 @@ The developer node is the place where a failure found on a node of the ecosystem
 
 1. `evidence ingest` stores the bundle as a case (`awaiting-review`).
 2. A person reviews it and writes a recipe; `checkout fetch` gets the exact revision.
-3. `repro approve` (a person at a terminal types the start of the recipe's digest), then `repro run --phase before`.
+3. `repro approve` (a person at a terminal reads the commands and types the start of the digest of recipe, phase and commit), then `repro run --phase before`.
 4. After a candidate fix: `repro approve` again and `repro run --phase after` on the new revision.
 5. `repro compare` gives the verdict from the SDK; an "apparent success" (the failure stopped but the source did not move) is never reported as fixed.
 

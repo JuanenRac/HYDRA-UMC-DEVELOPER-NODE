@@ -17,7 +17,8 @@
     "stepTimeoutSeconds": 60,
     "maxSteps": 20,
     "maxOutputBytes": 65536,
-    "allowedCommands": []
+    "allowedCommands": [],
+    "bindApprovalToRevision": true
   },
   "checkouts": {
     "enabled": false,
