@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## [Unreleased]
+## [0.0.5] - Approvals tied to a commit and hardened evidence
 
 - **An approval is for one phase on one commit, and shows what will run:** `repro approve` takes `--phase` and `--checkout` (or `--workdir` with `--fingerprint`), prints every command and its folder before asking, and the approval cannot be used for another phase or source state. With `--workdir` the commit of the folder is checked (`--allow-unverified-workdir` for a folder without one). `repro.bindApprovalToRevision` is on by default; `false` keeps the old behaviour.
 
