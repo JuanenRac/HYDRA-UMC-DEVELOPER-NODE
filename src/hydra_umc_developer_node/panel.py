@@ -99,9 +99,11 @@ def _push_token(settings: Settings) -> str:
     token = ""
     if push.token_file:
         try:
-            token = Path(push.token_file).expanduser().read_text(encoding="utf-8").strip()
+            token = Path(push.token_file).expanduser().read_text(encoding="utf-8-sig").strip()
         except OSError as error:
             raise PushError(f"cannot read serverPush.tokenFile: {error.strerror or 'error'}") from error
+        except UnicodeDecodeError:
+            raise PushError("cannot read serverPush.tokenFile: it is not UTF-8 text") from None
     elif push.token_env:
         token = os.environ.get(push.token_env, "").strip()
     if len(token) < 16:
